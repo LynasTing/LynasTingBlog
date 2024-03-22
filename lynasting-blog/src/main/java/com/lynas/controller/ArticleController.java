@@ -1,5 +1,6 @@
 package com.lynas.controller;
 
+import com.lynas.domain.ResponseResult;
 import com.lynas.domain.entity.Article;
 import com.lynas.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ public class ArticleController {
   @Autowired
   private ArticleService articleService;
 
-  @GetMapping("/list")
-  public List<Article> test() {
-    return articleService.list();
+  @GetMapping("/getHot")
+  public ResponseResult getHot() {
+    return articleService.getHot();
   }
 }
