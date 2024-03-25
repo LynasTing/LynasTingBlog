@@ -1,4 +1,4 @@
-package com.lynas.vo;
+package com.lynas.domain.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

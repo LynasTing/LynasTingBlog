@@ -1,7 +1,7 @@
 package com.lynas.utils;
 
 import com.lynas.domain.entity.Article;
-import com.lynas.vo.HotArticleVo;
+import com.lynas.domain.vo.HotArticleVo;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;

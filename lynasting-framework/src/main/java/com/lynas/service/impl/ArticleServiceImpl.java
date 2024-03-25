@@ -9,11 +9,9 @@ import com.lynas.domain.entity.Article;
 import com.lynas.mapper.ArticleMapper;
 import com.lynas.service.ArticleService;
 import com.lynas.utils.BeanCopyUtils;
-import com.lynas.vo.HotArticleVo;
-import org.springframework.beans.BeanUtils;
+import com.lynas.domain.vo.HotArticleVo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

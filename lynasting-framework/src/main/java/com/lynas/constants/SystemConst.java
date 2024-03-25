@@ -10,4 +10,9 @@ public class SystemConst {
    * 草稿
    */
   public static final int ARTICLE_STATUS_DRAFT = 0;
+
+  /**
+   * 文章分类是正常
+   */
+  public static final int CATEGORY_STATUS_NORMAL = 1;
 }

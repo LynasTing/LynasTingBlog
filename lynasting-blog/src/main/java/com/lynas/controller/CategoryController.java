@@ -1,24 +1,21 @@
 package com.lynas.controller;
 
 import com.lynas.domain.ResponseResult;
-import com.lynas.domain.entity.Article;
-import com.lynas.service.ArticleService;
+import com.lynas.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/article")
-public class ArticleController {
+@RequestMapping("/category")
+public class CategoryController {
 
   @Autowired
-  private ArticleService articleService;
+  private CategoryService categoryService;
 
-  @GetMapping("/getHot")
-  public ResponseResult getHot() {
-    return articleService.getHot();
+  @GetMapping("getList")
+  public ResponseResult getList() {
+    return categoryService.getList();
   }
 }
