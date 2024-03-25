@@ -21,4 +21,10 @@ public class ArticleController {
   public ResponseResult getHot() {
     return articleService.getHot();
   }
+
+
+  @GetMapping("/list")
+  public ResponseResult List(Long categoryId, Integer pageNum, Integer pageSize) {
+    return articleService.getList(categoryId, pageNum, pageSize);
+  }
 }
