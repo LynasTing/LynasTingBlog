@@ -7,6 +7,7 @@ import com.lynas.constants.SystemConst;
 import com.lynas.domain.ResponseResult;
 import com.lynas.domain.entity.Article;
 import com.lynas.domain.entity.Category;
+import com.lynas.domain.vo.ArticleDetailVo;
 import com.lynas.domain.vo.ArticleListVo;
 import com.lynas.domain.vo.PageVo;
 import com.lynas.mapper.ArticleMapper;
@@ -68,5 +69,21 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     // 再次封装成 数组+total 的对象
     return ResponseResult.okResult(new PageVo(articleListVos, page.getTotal()));
+  }
+
+  public ResponseResult getDetail(Long id) {
+    // 根据id查询文章
+    Article article = getById(id);
+    // 封装VO
+    ArticleDetailVo articleDetailVo = BeanCopyUtils.beanCopy(article, ArticleDetailVo.class);
+    // 先拿到分类id
+    Long categoryId = articleDetailVo.getCategoryId();
+    // 根据分类id查询分类名
+    Category byId = categoryService.getById(categoryId);
+    if(byId != null) {
+      articleDetailVo.setCategoryName(byId.getName());
+    }
+    // 封装响应返回
+    return ResponseResult.okResult(articleDetailVo);
   }
 }

@@ -5,6 +5,7 @@ import com.lynas.domain.entity.Article;
 import com.lynas.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,12 @@ public class ArticleController {
 
 
   @GetMapping("/list")
-  public ResponseResult List(Long categoryId, Integer pageNum, Integer pageSize) {
+  public ResponseResult list(Long categoryId, Integer pageNum, Integer pageSize) {
     return articleService.getList(categoryId, pageNum, pageSize);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseResult detail(@PathVariable("id") Long id) {
+    return articleService.getDetail(id);
   }
 }
