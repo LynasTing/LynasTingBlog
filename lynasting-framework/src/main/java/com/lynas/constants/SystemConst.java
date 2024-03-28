@@ -15,4 +15,9 @@ public class SystemConst {
    * 文章分类是正常
    */
   public static final int CATEGORY_STATUS_NORMAL = 1;
+
+  /**
+   * 友链审核通过
+   */
+  public static final int LINK_STATUS_NORMAL = 2;
 }
