@@ -27,33 +27,28 @@ public class BlogLoginServiceImpl implements BlogLoginService {
 
   @Override
   public ResponseResult login(User user) {
-    try {
-      System.out.println("user" + user);
-      UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
-      Authentication authenticate = authenticationManager.authenticate(authToken);
+    System.out.println("user" + user);
+    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
+    Authentication authenticate = authenticationManager.authenticate(authToken);
 
-      // 判断认证是否通过
-      if (Objects.isNull(authenticate)) {
-        throw new RuntimeException("用户名或密码错误");
-      }
-
-      // 获取userId,生成Token
-      LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
-      String userId = loginUser.getUser().getId().toString();
-      String jwt = JwtUtil.createJWT(userId);
-
-      // 把用户信息存入redis
-      redisCache.setCacheObject("bloglogin" + userId, loginUser);
-
-      // 拿到userInfo
-      UserInfoVo userInfoVo = BeanCopyUtils.beanCopy(loginUser.getUser(), UserInfoVo.class);
-
-      // 将token和userInfo封装成一个对象
-      BlogUserLoginVo blogUserLoginVo = new BlogUserLoginVo(jwt, userInfoVo);
-      return ResponseResult.okResult(blogUserLoginVo);
-    }catch(Exception e) {
-      System.out.println(e);
+    // 判断认证是否通过
+    if (Objects.isNull(authenticate)) {
+      throw new RuntimeException("用户名或密码错误");
     }
-    return null;
+
+    // 获取userId,生成Token
+    LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
+    String userId = loginUser.getUser().getId().toString();
+    String jwt = JwtUtil.createJWT(userId);
+
+    // 把用户信息存入redis
+    redisCache.setCacheObject("bloglogin" + userId, loginUser);
+
+    // 拿到userInfo
+    UserInfoVo userInfoVo = BeanCopyUtils.beanCopy(loginUser.getUser(), UserInfoVo.class);
+
+    // 将token和userInfo封装成一个对象
+    BlogUserLoginVo blogUserLoginVo = new BlogUserLoginVo(jwt, userInfoVo);
+    return ResponseResult.okResult(blogUserLoginVo);
   }
 }
