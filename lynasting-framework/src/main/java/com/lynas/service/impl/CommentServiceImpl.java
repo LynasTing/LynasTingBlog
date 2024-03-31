@@ -8,12 +8,15 @@ import com.lynas.domain.ResponseResult;
 import com.lynas.domain.entity.Comment;
 import com.lynas.domain.vo.CommentVo;
 import com.lynas.domain.vo.PageVo;
+import com.lynas.enums.AppHttpCodeEnum;
+import com.lynas.excepion.SystemException;
 import com.lynas.mapper.CommentMapper;
 import com.lynas.service.CommentService;
 import com.lynas.service.UserService;
 import com.lynas.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -55,6 +58,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     return ResponseResult.okResult(new PageVo(arr, page.getTotal()));
   }
 
+
+
   /**
    * 根据根评论id查回复评论的集合
    * @param id 根评论id
@@ -91,4 +96,18 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     return commentVos;
   }
 
+  /**
+   * 新增或回复评论
+   *
+   * @param comment
+   */
+  @Override
+  public ResponseResult commentReply(Comment comment) {
+    if(!StringUtils.hasText(comment.getContent())) {
+      throw new SystemException(AppHttpCodeEnum.CONTENT_IS_NULL);
+    }
+    // 这个save方法是mybatis-plus内置的
+    save(comment);
+    return ResponseResult.okResult();
+  }
 }
