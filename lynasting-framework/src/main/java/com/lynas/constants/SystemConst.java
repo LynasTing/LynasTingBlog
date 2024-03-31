@@ -20,4 +20,9 @@ public class SystemConst {
    * 友链审核通过
    */
   public static final int LINK_STATUS_NORMAL = 2;
+
+  /**
+   * 文章评论根评论
+   */
+  public static final int COMMENT_LIST_ROOT = -1;
 }
