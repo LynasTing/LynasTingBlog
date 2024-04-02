@@ -22,9 +22,9 @@ public class User implements Serializable {
     //主键
     private Long id;
     //用户名
-    private String userName;
+    private String username;
     //昵称
-    private String nickName;
+    private String nickname;
     //密码
     private String password;
     //用户类型：0代表普通用户，1代表管理员
@@ -34,7 +34,7 @@ public class User implements Serializable {
     //邮箱
     private String email;
     //手机号
-    private String phonenumber;
+    private String phoneNum;
     //用户性别（0男，1女，2未知）
     private String sex;
     //头像

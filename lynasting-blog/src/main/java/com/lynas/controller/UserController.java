@@ -28,4 +28,12 @@ public class UserController {
   public ResponseResult putUserInfo(@RequestBody User user) {
     return userService.putUserInfo(user);
   }
+
+  /**
+   * 注册
+   */
+  @PostMapping("/register")
+  public ResponseResult register(@RequestBody User user) {
+    return userService.register(user);
+  }
 }

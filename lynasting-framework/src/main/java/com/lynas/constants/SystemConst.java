@@ -35,4 +35,5 @@ public class SystemConst {
    * 友链评论
    */
   public static final String LINK_COMMENT = "2";
+
 }

@@ -29,7 +29,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
   @Override
   public ResponseResult login(User user) {
     System.out.println("user" + user);
-    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
+    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
     Authentication authenticate = authenticationManager.authenticate(authToken);
 
     // 判断认证是否通过

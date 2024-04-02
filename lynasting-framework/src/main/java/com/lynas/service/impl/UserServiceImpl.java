@@ -1,14 +1,20 @@
 package com.lynas.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.domain.ResponseResult;
 import com.lynas.domain.vo.UserInfoVo;
+import com.lynas.enums.AppHttpCodeEnum;
+import com.lynas.excepion.SystemException;
 import com.lynas.mapper.UserMapper;
 import com.lynas.domain.entity.User;
 import com.lynas.service.UserService;
 import com.lynas.utils.BeanCopyUtils;
 import com.lynas.utils.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * 用户表(User)表服务实现类
@@ -35,5 +41,41 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
   public ResponseResult putUserInfo(User user) {
     updateById(user);
     return ResponseResult.okResult();
+  }
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
+  @Override
+  public ResponseResult register(User user) {
+    // 非空判断
+    if(!StringUtils.hasText(user.getUsername())) {
+      throw new SystemException(AppHttpCodeEnum.USERNAME_IS_NULL);
+    }
+    if(!StringUtils.hasText(user.getNickname())) {
+      throw new SystemException(AppHttpCodeEnum.NICKNAME_IS_NULL);
+    }
+    if(!StringUtils.hasText(user.getPassword())) {
+      throw new SystemException(AppHttpCodeEnum.PASSWORD_IS_NULL);
+    }
+    if(!StringUtils.hasText(user.getEmail())) {
+      throw new SystemException(AppHttpCodeEnum.EMAIL_IS_NULL);
+    }
+    // 数据是否已存在
+    if(usernameExist(user.getUsername())) {
+      throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
+    }
+    // 密码加密
+    String encode = passwordEncoder.encode(user.getPassword());
+    user.setPassword(encode);
+    // 插入
+    save(user);
+    return ResponseResult.okResult();
+  }
+
+  private boolean usernameExist(String username) {
+    LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+    queryWrapper.eq(User::getUsername, username);
+    return count(queryWrapper) > 0;
   }
 }

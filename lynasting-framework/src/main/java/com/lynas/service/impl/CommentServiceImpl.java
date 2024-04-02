@@ -89,12 +89,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     List<CommentVo> commentVos = BeanCopyUtils.beanListCopy(arr, CommentVo.class);
     for (CommentVo item : commentVos) {
       // 通过createBy查询到用户的昵称，需要借助userService
-      String nickName = userService.getById(item.getCreateBy()).getNickName();
-      item.setUsername(nickName);
+      String nickname = userService.getById(item.getCreateBy()).getNickname();
+      item.setUsername(nickname);
 
       // 通过toCommentUserId查询到toCommentName
       if(item.getToCommentUserId() != -1) {
-        String toCommentName = userService.getById(item.getToCommentUserId()).getNickName();
+        String toCommentName = userService.getById(item.getToCommentUserId()).getNickname();
         item.setToCommentUserName(toCommentName);
       }
     }
