@@ -25,4 +25,14 @@ public class SystemConst {
    * 文章评论根评论
    */
   public static final int COMMENT_LIST_ROOT = -1;
+
+  /**
+   * 文章评论
+   */
+  public static final String ARTICLE_COMMENT = "1";
+
+  /**
+   * 友链评论
+   */
+  public static final String LINK_COMMENT = "2";
 }

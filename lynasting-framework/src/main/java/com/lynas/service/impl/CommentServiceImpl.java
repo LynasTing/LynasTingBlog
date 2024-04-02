@@ -33,10 +33,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
   private UserService userService;
 
   @Override
-  public ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize) {
+  public ResponseResult commentList(String commentType, Long articleId, Integer pageNum, Integer pageSize) {
     // 查询对应文章
     LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
-    queryWrapper.eq(Comment::getArticleId, articleId);
+
+    // 只有文章评论才查articleId
+    queryWrapper.eq(SystemConst.ARTICLE_COMMENT.equals(commentType), Comment::getArticleId, articleId);
+
+    // 查询文章/友链评论
+    queryWrapper.eq(Comment::getType, commentType);
 
     // 查询文章的根评论
     LambdaQueryWrapper<Comment> list = queryWrapper.eq(Comment::getRootId, SystemConst.COMMENT_LIST_ROOT);
