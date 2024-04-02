@@ -1,11 +1,10 @@
 package com.lynas.controller;
 
 import com.lynas.domain.ResponseResult;
+import com.lynas.domain.entity.User;
 import com.lynas.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -15,10 +14,18 @@ public class UserController {
   private UserService userService;
 
   /**
-   * 用户信息
+   * 获取用户信息
    */
-  @GetMapping("/info")
-  public ResponseResult userInfo() {
+  @GetMapping("/getInfo")
+  public ResponseResult getUserInfo() {
     return userService.getUserInfo();
+  }
+
+  /**
+   * 更新用户信息
+   */
+  @PutMapping("/putInfo")
+  public ResponseResult putUserInfo(@RequestBody User user) {
+    return userService.putUserInfo(user);
   }
 }

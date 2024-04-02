@@ -30,4 +30,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     // 返回
     return ResponseResult.okResult(userInfoVo);
   }
+
+  @Override
+  public ResponseResult putUserInfo(User user) {
+    updateById(user);
+    return ResponseResult.okResult();
+  }
 }
