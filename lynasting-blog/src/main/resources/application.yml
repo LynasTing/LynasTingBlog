@@ -20,3 +20,8 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
       id-type: auto
+oss:
+  ak: j9kZIMcb5lv2eWoIB2MSDpCCbhUXuqaM6pRJtk5W
+  sk: 7Q9AGMhUkI78kYDzxXmzNnVsFgwK7LTOFtJCLYMc
+  bucket: lynasting-blog
+  cdn: http://sbamg94eq.hn-bkt.clouddn.com/

@@ -18,7 +18,7 @@ public class UserController {
    * 用户信息
    */
   @GetMapping("/info")
-  public ResponseResult info() {
+  public ResponseResult userInfo() {
     return userService.getUserInfo();
   }
 }
