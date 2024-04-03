@@ -3,13 +3,20 @@ package com.lynas.controller;
 
 import com.lynas.constants.SystemConst;
 import com.lynas.domain.ResponseResult;
+import com.lynas.domain.dto.ReplyCommentDto;
 import com.lynas.domain.entity.Comment;
 import com.lynas.service.CommentService;
+import com.lynas.utils.BeanCopyUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/comment")
+@Api(tags = "评论", description = "评论相关接口")
 public class CommentController {
 
   @Autowired
@@ -21,7 +28,8 @@ public class CommentController {
   }
 
   @PostMapping("/reply")
-  public ResponseResult commentReply(@RequestBody Comment comment) {
+  public ResponseResult commentReply(@RequestBody ReplyCommentDto commentDto) {
+    Comment comment = BeanCopyUtils.beanCopy(commentDto, Comment.class);
     return commentService.commentReply(comment);
   }
 
@@ -29,6 +37,11 @@ public class CommentController {
    * 友链评论列表
    */
   @GetMapping("/linkCommentList")
+  @ApiOperation(value = "友链评论列表", notes = "获取一页友链评论")
+  @ApiImplicitParams({
+    @ApiImplicitParam(name = "pageNum", value = "页码"),
+    @ApiImplicitParam(name = "pageSize", value = "每页查询条数", required = true)
+  })
   public ResponseResult linkCommentList(Integer pageNum, Integer pageSize) {
     return commentService.commentList(SystemConst.LINK_COMMENT, null,  pageNum, pageSize);
   }
