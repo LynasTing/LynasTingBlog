@@ -15,6 +15,7 @@ import com.lynas.service.ArticleService;
 import com.lynas.service.CategoryService;
 import com.lynas.utils.BeanCopyUtils;
 import com.lynas.domain.vo.HotArticleVo;
+import com.lynas.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,9 @@ import java.util.stream.Collectors;
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
   @Autowired
   private CategoryService categoryService;
+
+  @Autowired
+  private RedisCache redisCache;
 
   @Override
   public ResponseResult getHot() {
@@ -74,6 +78,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
   public ResponseResult getDetail(Long id) {
     // 根据id查询文章
     Article article = getById(id);
+    // 从redis中取出访问量
+    Integer viewCount = redisCache.getCacheMapValue(SystemConst.REDIS_VIEW_COUNT_KEY, id.toString());
+    article.setViewCount(viewCount.longValue());
     // 封装VO
     ArticleDetailVo articleDetailVo = BeanCopyUtils.beanCopy(article, ArticleDetailVo.class);
     // 先拿到分类id
@@ -85,5 +92,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
     // 封装响应返回
     return ResponseResult.okResult(articleDetailVo);
+  }
+
+  @Override
+  public ResponseResult putViewCount(Long id) {
+    redisCache.incrementCacheMapValue(SystemConst.REDIS_VIEW_COUNT_KEY, id.toString(), 1);
+    return ResponseResult.okResult();
   }
 }

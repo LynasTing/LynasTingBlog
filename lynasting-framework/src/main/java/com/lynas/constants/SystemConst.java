@@ -36,4 +36,9 @@ public class SystemConst {
    */
   public static final String LINK_COMMENT = "2";
 
+  /**
+   * 文章访问量在redis中的key
+   */
+  public static final String REDIS_VIEW_COUNT_KEY = "article:viewCount";
+
 }

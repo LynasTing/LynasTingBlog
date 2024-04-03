@@ -202,6 +202,16 @@ public class RedisCache
     }
 
     /**
+     * 更新文章访问量
+     * @param key  操作哪一个hash结构 -- redis键
+     * @param hk 对应字段的key -- hash键
+     * @param val 每次递增的值
+     */
+    public void incrementCacheMapValue(String key, String hk, int val) {
+        redisTemplate.opsForHash().increment(key, hk, val);
+    }
+
+    /**
      * 删除Hash中的数据
      * 
      * @param key
