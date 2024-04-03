@@ -1,5 +1,6 @@
 package com.lynas.controller;
 
+import com.lynas.annotation.SystemLog;
 import com.lynas.domain.ResponseResult;
 import com.lynas.domain.entity.User;
 import com.lynas.service.UserService;
@@ -25,6 +26,7 @@ public class UserController {
    * 更新用户信息
    */
   @PutMapping("/putInfo")
+  @SystemLog(business = "更新用户信息")
   public ResponseResult putUserInfo(@RequestBody User user) {
     return userService.putUserInfo(user);
   }
