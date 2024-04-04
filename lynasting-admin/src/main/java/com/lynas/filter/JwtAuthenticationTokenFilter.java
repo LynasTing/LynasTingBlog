@@ -1,6 +1,7 @@
 package com.lynas.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.lynas.constants.SystemConst;
 import com.lynas.domain.R;
 import com.lynas.domain.entity.LoginUser;
 import com.lynas.enums.AppHttpCodeEnum;
@@ -54,7 +55,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     // 从redis中获取用户信息
     String userId = claims.getSubject();
-    LoginUser cacheObject = redisCache.getCacheObject("bloglogin" + userId);
+    LoginUser cacheObject = redisCache.getCacheObject(SystemConst.ADMIN_REDIS_TOKEN + userId);
     if(Objects.isNull(cacheObject)) {
       // redis查不到直接当作未登录处理
       R result = R.errorResult(AppHttpCodeEnum.NEED_LOGIN);

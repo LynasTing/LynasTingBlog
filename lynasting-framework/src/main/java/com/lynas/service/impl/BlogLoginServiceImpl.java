@@ -1,6 +1,6 @@
 package com.lynas.service.impl;
 
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.entity.LoginUser;
 import com.lynas.domain.entity.User;
 import com.lynas.domain.vo.BlogUserLoginVo;
@@ -27,7 +27,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
   private RedisCache redisCache;
 
   @Override
-  public ResponseResult login(User user) {
+  public R login(User user) {
     System.out.println("user" + user);
     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
     Authentication authenticate = authenticationManager.authenticate(authToken);
@@ -50,11 +50,11 @@ public class BlogLoginServiceImpl implements BlogLoginService {
 
     // 将token和userInfo封装成一个对象
     BlogUserLoginVo blogUserLoginVo = new BlogUserLoginVo(jwt, userInfoVo);
-    return ResponseResult.okResult(blogUserLoginVo);
+    return R.okResult(blogUserLoginVo);
   }
 
   @Override
-  public ResponseResult logout() {
+  public R logout() {
     // 获取token
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -67,7 +67,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
     // 在redis中删除这个用户的信息
     redisCache.deleteObject("bloglogin" + id);
 
-    return ResponseResult.okResult();
+    return R.okResult();
   }
 
 }

@@ -1,7 +1,7 @@
 package com.lynas.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.entity.Comment;
 
 /**
@@ -12,7 +12,7 @@ import com.lynas.domain.entity.Comment;
  */
 public interface CommentService extends IService<Comment> {
 
-  ResponseResult commentList(String commentType, Long articleId, Integer pageNum, Integer pageSize);
+  R commentList(String commentType, Long articleId, Integer pageNum, Integer pageSize);
 
-  ResponseResult commentReply(Comment comment);
+  R commentReply(Comment comment);
 }

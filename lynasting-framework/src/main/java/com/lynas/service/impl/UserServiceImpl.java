@@ -2,7 +2,7 @@ package com.lynas.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.vo.UserInfoVo;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.excepion.SystemException;
@@ -26,7 +26,7 @@ import org.springframework.util.StringUtils;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
   @Override
-  public ResponseResult getUserInfo() {
+  public R getUserInfo() {
     // 拿到id
     Long userId = SecurityUtils.getUserId();
     // 查询出用户信息
@@ -34,20 +34,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     // vo封装
     UserInfoVo userInfoVo = BeanCopyUtils.beanCopy(user, UserInfoVo.class);
     // 返回
-    return ResponseResult.okResult(userInfoVo);
+    return R.okResult(userInfoVo);
   }
 
   @Override
-  public ResponseResult putUserInfo(User user) {
+  public R putUserInfo(User user) {
     updateById(user);
-    return ResponseResult.okResult();
+    return R.okResult();
   }
 
   @Autowired
   private PasswordEncoder passwordEncoder;
 
   @Override
-  public ResponseResult register(User user) {
+  public R register(User user) {
     // 非空判断
     if(!StringUtils.hasText(user.getUsername())) {
       throw new SystemException(AppHttpCodeEnum.USERNAME_IS_NULL);
@@ -70,7 +70,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     user.setPassword(encode);
     // 插入
     save(user);
-    return ResponseResult.okResult();
+    return R.okResult();
   }
 
   private boolean usernameExist(String username) {

@@ -1,15 +1,15 @@
 package com.lynas.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.entity.Article;
 
 public interface ArticleService extends IService<Article> {
-  ResponseResult getHot();
+  R getHot();
 
-  ResponseResult getList(Long categoryId, Integer pageNum, Integer pageSize);
+  R getList(Long categoryId, Integer pageNum, Integer pageSize);
 
-  ResponseResult getDetail(Long id);
+  R getDetail(Long id);
 
-  ResponseResult putViewCount(Long id);
+  R putViewCount(Long id);
 }

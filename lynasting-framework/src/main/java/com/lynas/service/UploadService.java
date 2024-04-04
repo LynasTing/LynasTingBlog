@@ -1,8 +1,8 @@
 package com.lynas.service;
 
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UploadService {
-  ResponseResult uploadImg(MultipartFile img);
+  R uploadImg(MultipartFile img);
 }

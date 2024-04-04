@@ -1,6 +1,6 @@
 package com.lynas.controller;
 
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ public class CategoryController {
   private CategoryService categoryService;
 
   @GetMapping("getList")
-  public ResponseResult getList() {
+  public R getList() {
     return categoryService.getList();
   }
 }

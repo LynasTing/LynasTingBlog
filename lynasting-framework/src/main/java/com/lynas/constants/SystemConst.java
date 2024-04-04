@@ -41,4 +41,9 @@ public class SystemConst {
    */
   public static final String REDIS_VIEW_COUNT_KEY = "article:viewCount";
 
+  /**
+   * 后台系统用户token在redis中的key
+   */
+  public static final String ADMIN_REDIS_TOKEN = "adminlogin";
+
 }

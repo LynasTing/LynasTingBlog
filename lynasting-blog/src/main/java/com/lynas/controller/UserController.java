@@ -1,7 +1,7 @@
 package com.lynas.controller;
 
 import com.lynas.annotation.SystemLog;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.entity.User;
 import com.lynas.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class UserController {
    * 获取用户信息
    */
   @GetMapping("/getInfo")
-  public ResponseResult getUserInfo() {
+  public R getUserInfo() {
     return userService.getUserInfo();
   }
 
@@ -27,7 +27,7 @@ public class UserController {
    */
   @PutMapping("/putInfo")
   @SystemLog(business = "更新用户信息")
-  public ResponseResult putUserInfo(@RequestBody User user) {
+  public R putUserInfo(@RequestBody User user) {
     return userService.putUserInfo(user);
   }
 
@@ -35,7 +35,7 @@ public class UserController {
    * 注册
    */
   @PostMapping("/register")
-  public ResponseResult register(@RequestBody User user) {
+  public R register(@RequestBody User user) {
     return userService.register(user);
   }
 }

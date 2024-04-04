@@ -2,7 +2,7 @@ package com.lynas.controller;
 
 
 import com.lynas.constants.SystemConst;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.dto.ReplyCommentDto;
 import com.lynas.domain.entity.Comment;
 import com.lynas.service.CommentService;
@@ -23,12 +23,12 @@ public class CommentController {
   private CommentService commentService;
 
   @GetMapping("list")
-  public ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize) {
+  public R commentList(Long articleId, Integer pageNum, Integer pageSize) {
     return  commentService.commentList(SystemConst.ARTICLE_COMMENT, articleId, pageNum, pageSize);
   }
 
   @PostMapping("/reply")
-  public ResponseResult commentReply(@RequestBody ReplyCommentDto commentDto) {
+  public R commentReply(@RequestBody ReplyCommentDto commentDto) {
     Comment comment = BeanCopyUtils.beanCopy(commentDto, Comment.class);
     return commentService.commentReply(comment);
   }
@@ -42,7 +42,7 @@ public class CommentController {
     @ApiImplicitParam(name = "pageNum", value = "页码"),
     @ApiImplicitParam(name = "pageSize", value = "每页查询条数", required = true)
   })
-  public ResponseResult linkCommentList(Integer pageNum, Integer pageSize) {
+  public R linkCommentList(Integer pageNum, Integer pageSize) {
     return commentService.commentList(SystemConst.LINK_COMMENT, null,  pageNum, pageSize);
   }
 }

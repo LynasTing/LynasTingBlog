@@ -1,6 +1,6 @@
 package com.lynas.controller;
 
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.entity.User;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.excepion.SystemException;
@@ -19,9 +19,9 @@ public class BlogLoginController {
   private BlogLoginService blogLoginService;
 
   @PostMapping("/login")
-  public ResponseResult login(@RequestBody User user) {
+  public R login(@RequestBody User user) {
     if(!StringUtils.hasText(user.getUsername())) {
-      throw  new SystemException(AppHttpCodeEnum.REQUIRE_USERNAME);
+      throw new SystemException(AppHttpCodeEnum.REQUIRE_USERNAME);
     }
     return blogLoginService.login(user);
   }
@@ -30,7 +30,7 @@ public class BlogLoginController {
    * 退出
    */
   @PostMapping("/logout")
-  public ResponseResult logout() {
+  public R logout() {
     return blogLoginService.logout();
   }
 }

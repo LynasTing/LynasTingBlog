@@ -1,7 +1,7 @@
 package com.lynas.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.entity.User;
 
 /**
@@ -12,9 +12,9 @@ import com.lynas.domain.entity.User;
  */
 public interface UserService extends IService<User> {
 
-  ResponseResult getUserInfo();
+  R getUserInfo();
 
-  ResponseResult putUserInfo(User user);
+  R putUserInfo(User user);
 
-  ResponseResult register(User user);
+  R register(User user);
 }

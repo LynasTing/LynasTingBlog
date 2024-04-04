@@ -1,6 +1,6 @@
 package com.lynas.handler.exception;
 
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.excepion.SystemException;
 import lombok.extern.slf4j.Slf4j;
@@ -16,20 +16,20 @@ import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 public class GlobalExceptionHandle {
 
   @ExceptionHandler(SystemException.class)
-  public ResponseResult systemExceptionHandler(SystemException e) {
+  public R systemExceptionHandler(SystemException e) {
     // 打印异常信息
     log.error("systemExceptionHandler + 出现了异常", e);
 
     // 从异常对象中获取提示信息返回封装
-    return ResponseResult.errorResult(e.getCode(), e.getMsg());
+    return R.errorResult(e.getCode(), e.getMsg());
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseResult exceptionHandler(Exception e) {
+  public R exceptionHandler(Exception e) {
     // 打印异常信息
     log.error("exceptionHandler + 出现了异常", e);
 
     // 从异常对象中获取提示信息返回封装
-    return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR.getCode(), e.getMessage());
+    return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR.getCode(), e.getMessage());
   }
 }

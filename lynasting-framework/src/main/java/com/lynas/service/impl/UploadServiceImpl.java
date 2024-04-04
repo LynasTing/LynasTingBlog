@@ -1,7 +1,7 @@
 package com.lynas.service.impl;
 
 import com.google.gson.Gson;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.excepion.SystemException;
 import com.lynas.service.UploadService;
@@ -27,7 +27,7 @@ import java.io.InputStream;
 public class UploadServiceImpl implements UploadService {
 
   @Override
-  public ResponseResult uploadImg(MultipartFile img) {
+  public R uploadImg(MultipartFile img) {
 
     // TODO 判断文件类型及大小
     // 获取文件名，判断出文件类型
@@ -40,7 +40,7 @@ public class UploadServiceImpl implements UploadService {
     // 上传到七牛云
     String url = uploadQiniuOss(img, filePath);
     // 返回
-    return ResponseResult.okResult(url);
+    return R.okResult(url);
   }
 
   private String ak;

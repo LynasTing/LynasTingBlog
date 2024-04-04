@@ -1,6 +1,6 @@
 package com.lynas.controller;
 
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.entity.Article;
 import com.lynas.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class ArticleController {
    * 获取热门文章
    */
   @GetMapping("/getHot")
-  public ResponseResult getHot() {
+  public R getHot() {
     return articleService.getHot();
   }
 
@@ -27,7 +27,7 @@ public class ArticleController {
    * 获取文章列表
    */
   @GetMapping("/list")
-  public ResponseResult list(Long categoryId, Integer pageNum, Integer pageSize) {
+  public R list(Long categoryId, Integer pageNum, Integer pageSize) {
     return articleService.getList(categoryId, pageNum, pageSize);
   }
 
@@ -36,7 +36,7 @@ public class ArticleController {
    * 获取文章详情
    */
   @GetMapping("/{id}")
-  public ResponseResult detail(@PathVariable("id") Long id) {
+  public R detail(@PathVariable("id") Long id) {
     return articleService.getDetail(id);
   }
 
@@ -44,7 +44,7 @@ public class ArticleController {
    * 更新文章访问量
    */
   @PutMapping("/putViewCount/{id}")
-  public ResponseResult putViewCount(@PathVariable("id") Long id) {
+  public R putViewCount(@PathVariable("id") Long id) {
     return articleService.putViewCount(id);
   }
 }

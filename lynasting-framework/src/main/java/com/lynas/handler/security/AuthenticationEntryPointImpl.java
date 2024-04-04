@@ -2,7 +2,7 @@ package com.lynas.handler.security;
 
 import com.alibaba.fastjson.JSON;
 import com.beust.ah.A;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.utils.WebUtils;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,14 +26,14 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
   public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
     e.printStackTrace();
 
-    // 返回的数据类型得是ResponseResult
-    ResponseResult result = null;
+    // 返回的数据类型得是R
+    R result = null;
     if(e instanceof BadCredentialsException) {
-      result = ResponseResult.errorResult(AppHttpCodeEnum.LOGIN_ERROR.getCode(), e.getMessage());
+      result = R.errorResult(AppHttpCodeEnum.LOGIN_ERROR.getCode(), e.getMessage());
     }else if(e instanceof InsufficientAuthenticationException) {
-      result = ResponseResult.errorResult(AppHttpCodeEnum.NEED_LOGIN);
+      result = R.errorResult(AppHttpCodeEnum.NEED_LOGIN);
     }else {
-      result = ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR.getCode(), "认证或授权失败");
+      result = R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR.getCode(), "认证或授权失败");
     }
     // 响应给前端
     WebUtils.renderString(response, JSON.toJSONString(result));

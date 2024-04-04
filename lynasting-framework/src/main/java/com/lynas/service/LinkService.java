@@ -1,7 +1,7 @@
 package com.lynas.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.entity.Link;
 
 /**
@@ -12,5 +12,5 @@ import com.lynas.domain.entity.Link;
  */
 public interface LinkService extends IService<Link> {
 
-  ResponseResult getAllLink();
+  R getAllLink();
 }

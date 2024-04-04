@@ -1,20 +1,20 @@
 package com.lynas.controller;
 
 import com.lynas.domain.R;
-import com.lynas.service.LinkService;
+import com.lynas.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/link")
-public class LinkController {
+@RequestMapping("/content/tag")
+public class TagController {
   @Autowired
-  private LinkService linkService;
+  private TagService tagService;
 
-  @GetMapping("/get")
-  public R getAllLink() {
-    return linkService.getAllLink();
+  @GetMapping("/list")
+  public R list() {
+    return R.okResult(tagService.list());
   }
 }

@@ -3,7 +3,7 @@ package com.lynas.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.constants.SystemConst;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.entity.Article;
 import com.lynas.mapper.CategoryMapper;
 import com.lynas.domain.entity.Category;
@@ -34,7 +34,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
   private ArticleService articleService;
 
   @Override
-  public ResponseResult getList() {
+  public R getList() {
     // 查询文章表，状态为已发布的文章
     LambdaQueryWrapper<Article> articleWrapper = new LambdaQueryWrapper<>();
     articleWrapper.eq(Article::getStatus, SystemConst.ARTICLE_STATUS_NORMAL);
@@ -52,6 +52,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     // 封装成VO
     List<CategoryVo> categoryVos = BeanCopyUtils.beanListCopy(collect, CategoryVo.class);
     // 返回
-    return ResponseResult.okResult(categoryVos);
+    return R.okResult(categoryVos);
   }
 }

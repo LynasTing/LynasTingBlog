@@ -1,7 +1,7 @@
 package com.lynas.handler.security;
 
 import com.alibaba.fastjson.JSON;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.utils.WebUtils;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,8 +23,8 @@ public class  AccessDeniedHandlerImpl implements AccessDeniedHandler {
   public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
     e.printStackTrace();
 
-    // 返回的数据类型得是ResponseResult
-    ResponseResult result = ResponseResult.errorResult(AppHttpCodeEnum.NO_OPERATOR_AUTH);
+    // 返回的数据类型得是R
+    R result = R.errorResult(AppHttpCodeEnum.NO_OPERATOR_AUTH);
 
     // 响应给前端
     WebUtils.renderString(response, JSON.toJSONString(result));

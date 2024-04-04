@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.constants.SystemConst;
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.domain.entity.Comment;
 import com.lynas.domain.vo.CommentVo;
 import com.lynas.domain.vo.PageVo;
@@ -33,7 +33,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
   private UserService userService;
 
   @Override
-  public ResponseResult commentList(String commentType, Long articleId, Integer pageNum, Integer pageSize) {
+  public R commentList(String commentType, Long articleId, Integer pageNum, Integer pageSize) {
     // 查询对应文章
     LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
 
@@ -60,7 +60,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     // 返回数据是分页类型的，使用PageVo
-    return ResponseResult.okResult(new PageVo(arr, page.getTotal()));
+    return R.okResult(new PageVo(arr, page.getTotal()));
   }
 
 
@@ -107,12 +107,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
    * @param comment
    */
   @Override
-  public ResponseResult commentReply(Comment comment) {
+  public R commentReply(Comment comment) {
     if(!StringUtils.hasText(comment.getContent())) {
       throw new SystemException(AppHttpCodeEnum.CONTENT_IS_NULL);
     }
     // 这个save方法是mybatis-plus内置的
     save(comment);
-    return ResponseResult.okResult();
+    return R.okResult();
   }
 }

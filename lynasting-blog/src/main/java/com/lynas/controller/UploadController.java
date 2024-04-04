@@ -1,6 +1,6 @@
 package com.lynas.controller;
 
-import com.lynas.domain.ResponseResult;
+import com.lynas.domain.R;
 import com.lynas.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,7 @@ public class UploadController {
   private UploadService uploadService;
 
   @PostMapping("/upload")
-  public ResponseResult uploadImg(MultipartFile img) {
+  public R uploadImg(MultipartFile img) {
     return uploadService.uploadImg(img);
   }
 }
