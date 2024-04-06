@@ -2,12 +2,12 @@ package com.lynas.controller;
 
 import com.lynas.domain.R;
 import com.lynas.domain.dto.TagQueryDto;
+import com.lynas.domain.entity.Tag;
 import com.lynas.domain.vo.PageVo;
 import com.lynas.service.TagService;
+import com.lynas.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/content/tag")
@@ -19,4 +19,11 @@ public class TagController {
   public R<PageVo> getAll(Integer pageNum, Integer pageSize, TagQueryDto arg) {
     return tagService.getAll(pageNum, pageSize, arg);
   }
+
+  @PostMapping("/add")
+  public R addTag(@RequestBody TagQueryDto arg) {
+    Tag tagArg = BeanCopyUtils.beanCopy(arg, Tag.class);
+    return tagService.addTag(tagArg);
+  }
+
 }

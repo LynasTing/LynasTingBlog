@@ -14,4 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface TagService extends IService<Tag> {
   R getAll(Integer pageNum, Integer pageSize, TagQueryDto arg);
+
+  R addTag(Tag arg);
 }

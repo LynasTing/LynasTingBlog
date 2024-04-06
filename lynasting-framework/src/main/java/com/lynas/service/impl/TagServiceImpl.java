@@ -8,6 +8,8 @@ import com.lynas.domain.entity.Tag;
 import com.lynas.domain.vo.PageVo;
 import com.lynas.domain.dto.TagQueryDto;
 import com.lynas.domain.vo.TagVo;
+import com.lynas.enums.AppHttpCodeEnum;
+import com.lynas.excepion.SystemException;
 import com.lynas.mapper.TagMapper;
 import com.lynas.service.TagService;
 import com.lynas.utils.BeanCopyUtils;
@@ -40,5 +42,14 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
 
     List<TagVo> tagVos = BeanCopyUtils.beanListCopy(page.getRecords(), TagVo.class);
     return R.okResult(new PageVo(tagVos, page.getTotal()));
+  }
+
+  @Override
+  public R addTag(Tag arg) {
+    if(!StringUtils.hasText(arg.getName()))  {
+      throw new SystemException(AppHttpCodeEnum.CONTENT_IS_NULL);
+    }
+    save(arg);
+    return R.okResult();
   }
 }
