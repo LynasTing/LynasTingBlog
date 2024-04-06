@@ -46,4 +46,19 @@ public class SystemConst {
    */
   public static final String ADMIN_REDIS_TOKEN = "adminlogin";
 
+  /**
+   * 菜单类型为C的(菜单)
+   */
+  public static final String MENU_TYPE_C = "C";
+
+  /**
+   * 菜单类型为F的(按钮)
+   */
+  public static final String MENU_TYPE_F = "F";
+
+  /**
+   * 菜单类型正常
+   */
+  public static final int MENU_STATUS_NORMAL = 1;
+
 }
