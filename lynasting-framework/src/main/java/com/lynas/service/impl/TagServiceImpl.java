@@ -44,12 +44,26 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     return R.okResult(new PageVo(tagVos, page.getTotal()));
   }
 
+  /**
+   * 新增标签
+   */
   @Override
   public R addTag(Tag arg) {
     if(!StringUtils.hasText(arg.getName()))  {
       throw new SystemException(AppHttpCodeEnum.CONTENT_IS_NULL);
     }
     save(arg);
+    return R.okResult();
+  }
+
+  /**
+   * 逻辑删除标签
+   */
+  @Override
+  public R delTag(Long id) {
+    Tag byId = getById(id);
+    byId.setDelFlag(1);
+    getBaseMapper().deleteById(id);
     return R.okResult();
   }
 }

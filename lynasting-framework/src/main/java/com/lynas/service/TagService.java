@@ -16,4 +16,6 @@ public interface TagService extends IService<Tag> {
   R getAll(Integer pageNum, Integer pageSize, TagQueryDto arg);
 
   R addTag(Tag arg);
+
+  R delTag(Long id);
 }

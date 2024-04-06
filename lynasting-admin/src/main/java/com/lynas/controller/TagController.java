@@ -26,4 +26,8 @@ public class TagController {
     return tagService.addTag(tagArg);
   }
 
+  @DeleteMapping("/{id}")
+  public R delTag(@PathVariable("id") Long id) {
+    return tagService.delTag(id);
+  }
 }

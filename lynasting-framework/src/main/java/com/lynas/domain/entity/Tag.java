@@ -3,6 +3,7 @@ package com.lynas.domain.entity;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class Tag implements Serializable {
 
     private Date updateTime;
     //删除标志（0代表未删除，1代表已删除）
+    @TableLogic
     private Integer delFlag;
     //备注
     private String remark;
