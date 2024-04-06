@@ -1,11 +1,17 @@
 package com.lynas.domain.entity;
 
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.lynas.domain.vo.RoutesVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
+import java.util.List;
+
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.experimental.Accessors;
 
 
 /**
@@ -18,7 +24,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 public class Menu implements Serializable {
+    // 子集
+    @TableField(exist = false)
+    private List<Menu> children;
     // 菜单ID
     private Long id;
     // 菜单名称

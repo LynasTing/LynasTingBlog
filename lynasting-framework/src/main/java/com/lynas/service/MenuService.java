@@ -2,6 +2,7 @@ package com.lynas.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lynas.domain.entity.Menu;
+import com.lynas.domain.vo.RoutesVo;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ import java.util.List;
 public interface MenuService extends IService<Menu> {
 
   List<String> selectPermsById(Long id);
+
+  List<Menu> selectMenuById(Long id);
 }

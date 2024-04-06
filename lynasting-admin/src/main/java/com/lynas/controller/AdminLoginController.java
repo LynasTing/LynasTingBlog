@@ -2,8 +2,10 @@ package com.lynas.controller;
 
 import com.lynas.domain.R;
 import com.lynas.domain.entity.LoginUser;
+import com.lynas.domain.entity.Menu;
 import com.lynas.domain.entity.User;
 import com.lynas.domain.vo.AdminUserInfoVo;
+import com.lynas.domain.vo.RoutesVo;
 import com.lynas.domain.vo.UserInfoVo;
 import com.lynas.service.AdminLoginService;
 import com.lynas.service.MenuService;
@@ -67,6 +69,20 @@ public class AdminLoginController {
 
     // 封装数据返回
     return R.okResult(new AdminUserInfoVo(perms, roles, userInfoVo));
+  }
+
+  /**
+   * 获取动态路由
+   */
+  @GetMapping("/getRouters")
+  public R<RoutesVo> getRouters() {
+    Long id = SecurityUtils.getUserId();
+
+    // 通过用户id查到树形的menus
+    List<Menu> menus = menuService.selectMenuById(id);
+    // 返回
+    return R.okResult(menus);
+
   }
 
 }

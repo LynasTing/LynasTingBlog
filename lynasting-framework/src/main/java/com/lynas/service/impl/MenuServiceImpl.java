@@ -6,6 +6,7 @@ import com.lynas.constants.SystemConst;
 import com.lynas.domain.entity.Menu;
 import com.lynas.mapper.MenuMapper;
 import com.lynas.service.MenuService;
+import com.lynas.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
   @Override
   public List<String> selectPermsById(Long id) {
     // 如果用户id为1代表是超级管理员，返回所有可用权限
-    if(id == 1L) {
+    if(SecurityUtils.isAdmin()) {
       LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
       // 使用 LambdaQueryWrapper.in方法，可以查多个条件
       wrapper.in(Menu::getMenuType, SystemConst.MENU_TYPE_C, SystemConst.MENU_TYPE_F);
@@ -40,5 +41,39 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
       return menus;
     }
     return getBaseMapper().selectPermsById(id);
+  }
+
+  @Override
+  public List<Menu> selectMenuById(Long id) {
+    List<Menu> menus = null;
+    MenuMapper menuMapper = getBaseMapper();
+    if (SecurityUtils.isAdmin()) {
+      menus = menuMapper.selectAllMenu();
+    } else {
+      menus = menuMapper.selectMenuById(id);
+    }
+    return filterToTree(menus, 0L);
+  }
+
+  /**
+   * 一维数组转树形
+   */
+  private List<Menu> filterToTree(List<Menu> menus, Long pid) {
+    List<Menu> collects = menus.stream()
+      .filter(item -> item.getParentId().equals(pid))
+      .map(item -> item.setChildren(getChildren(item, menus)))
+      .collect(Collectors.toList());
+    return collects;
+  }
+
+  /**
+   * 获取当前项的子集
+   */
+  private List<Menu> getChildren(Menu item, List<Menu> menus) {
+    List<Menu> result = menus.stream()
+      .filter(sub -> sub.getParentId().equals(item.getId()))
+      .map(sub -> sub.setChildren(getChildren(sub, menus)))
+      .collect(Collectors.toList());
+    return result;
   }
 }
