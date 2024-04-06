@@ -77,12 +77,17 @@ public class AdminLoginController {
   @GetMapping("/getRouters")
   public R<RoutesVo> getRouters() {
     Long id = SecurityUtils.getUserId();
-
     // 通过用户id查到树形的menus
     List<Menu> menus = menuService.selectMenuById(id);
     // 返回
     return R.okResult(menus);
-
   }
 
+  /**
+   * 退出登录
+   */
+  @PostMapping("/logout")
+  public R logout() {
+    return adminLoginService.logout();
+  }
 }

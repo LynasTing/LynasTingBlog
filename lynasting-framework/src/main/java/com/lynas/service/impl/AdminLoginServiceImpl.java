@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -50,5 +51,14 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 
     // 返回token
     return R.okResult(loginRes);
+  }
+
+  @Override
+  public R logout() {
+    Authentication token = SecurityContextHolder.getContext().getAuthentication();
+    LoginUser loginUser = (LoginUser) token.getPrincipal();
+    Long id = loginUser.getUser().getId();
+    redisCache.deleteObject(SystemConst.ADMIN_REDIS_TOKEN + id);
+    return R.okResult();
   }
 }
