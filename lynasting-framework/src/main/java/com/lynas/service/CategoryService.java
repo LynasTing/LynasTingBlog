@@ -13,4 +13,6 @@ import com.lynas.domain.entity.Category;
 public interface CategoryService extends IService<Category> {
 
   R getList();
+
+  R getAll();
 }

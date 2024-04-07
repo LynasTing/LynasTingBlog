@@ -54,4 +54,16 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     // 返回
     return R.okResult(categoryVos);
   }
+
+  /**
+   * 查询所有分类
+   */
+  @Override
+  public R getAll() {
+    LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
+    wrapper.eq(Category::getStatus, SystemConst.CATEGORY_STATUS_NORMAL);
+    List<Category> list = list(wrapper);
+    List<CategoryVo> categoryVos = BeanCopyUtils.beanListCopy(list, CategoryVo.class);
+    return R.okResult(categoryVos);
+  }
 }

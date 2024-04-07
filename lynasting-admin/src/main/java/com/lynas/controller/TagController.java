@@ -7,7 +7,6 @@ import com.lynas.domain.vo.PageVo;
 import com.lynas.domain.vo.TagVo;
 import com.lynas.service.TagService;
 import com.lynas.utils.BeanCopyUtils;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,5 +40,13 @@ public class TagController {
   @PutMapping("/edit")
   public R editTag(@RequestBody TagVo arg) {
     return tagService.editTag(arg);
+  }
+
+  /**
+   * 查询所有标签(字典形式)
+   */
+  @GetMapping("/listAllTag")
+  public R<TagVo> getAllTag() {
+    return tagService.getAllTag();
   }
 }

@@ -96,4 +96,15 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     updateById(byId);
     return R.okResult();
   }
+
+  /**
+   * 查询所有标签(字典形式)
+   */
+
+  @Override
+  public R<TagVo> getAllTag() {
+    LambdaQueryWrapper<Tag> wrapper = new LambdaQueryWrapper<>();
+    List<TagVo> tagVos = BeanCopyUtils.beanListCopy(list(wrapper), TagVo.class);
+    return R.okResult(tagVos);
+  }
 }

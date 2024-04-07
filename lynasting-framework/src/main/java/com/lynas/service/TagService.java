@@ -23,4 +23,6 @@ public interface TagService extends IService<Tag> {
   R<TagVo> echoTag(Long id);
 
   R editTag(TagVo arg);
+
+  R<TagVo> getAllTag();
 }
