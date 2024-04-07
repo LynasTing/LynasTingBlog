@@ -100,11 +100,12 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
   /**
    * 查询所有标签(字典形式)
    */
-
   @Override
-  public R<TagVo> getAllTag() {
+  public List<TagVo> getAllTag() {
     LambdaQueryWrapper<Tag> wrapper = new LambdaQueryWrapper<>();
+    // 使用select方法可以指定需要查询的字段
+    wrapper.select(Tag::getId, Tag::getName);
     List<TagVo> tagVos = BeanCopyUtils.beanListCopy(list(wrapper), TagVo.class);
-    return R.okResult(tagVos);
+    return tagVos;
   }
 }

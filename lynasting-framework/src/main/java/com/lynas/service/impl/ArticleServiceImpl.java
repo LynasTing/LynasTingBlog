@@ -5,19 +5,23 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.constants.SystemConst;
 import com.lynas.domain.R;
+import com.lynas.domain.dto.ContentArticleDto;
 import com.lynas.domain.entity.Article;
+import com.lynas.domain.entity.ArticleTag;
 import com.lynas.domain.entity.Category;
 import com.lynas.domain.vo.ArticleDetailVo;
 import com.lynas.domain.vo.ArticleListVo;
 import com.lynas.domain.vo.PageVo;
 import com.lynas.mapper.ArticleMapper;
 import com.lynas.service.ArticleService;
+import com.lynas.service.ArticleTagService;
 import com.lynas.service.CategoryService;
 import com.lynas.utils.BeanCopyUtils;
 import com.lynas.domain.vo.HotArticleVo;
 import com.lynas.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +35,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
   @Autowired
   private RedisCache redisCache;
+
+  @Autowired
+  private ArticleTagService articleTagService;
 
   @Override
   public R getHot() {
@@ -97,6 +104,25 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
   @Override
   public R putViewCount(Long id) {
     redisCache.incrementCacheMapValue(SystemConst.REDIS_VIEW_COUNT_KEY, id.toString(), 1);
+    return R.okResult();
+  }
+
+  /**
+   * 新增文章
+   */
+  @Override
+  @Transactional
+  public R addArticle(ContentArticleDto arg) {
+    // 先保存
+    Article article = BeanCopyUtils.beanCopy(arg, Article.class);
+    save(article);
+
+    // 再关联表
+    List<ArticleTag> collects = arg.getTags().stream()
+      .map(item -> new ArticleTag(article.getId(), item))
+      .collect(Collectors.toList());
+
+    articleTagService.saveBatch(collects);
     return R.okResult();
   }
 }

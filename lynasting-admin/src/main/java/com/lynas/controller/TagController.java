@@ -46,7 +46,7 @@ public class TagController {
    * 查询所有标签(字典形式)
    */
   @GetMapping("/listAllTag")
-  public R<TagVo> getAllTag() {
-    return tagService.getAllTag();
+  public R getAllTag() {
+    return R.okResult(tagService.getAllTag());
   }
 }

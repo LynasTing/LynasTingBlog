@@ -18,7 +18,7 @@ import java.io.IOException;
  * @author LynasTing
  */
 @Component
-public class  AccessDeniedHandlerImpl implements AccessDeniedHandler {
+public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
   @Override
   public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
     e.printStackTrace();

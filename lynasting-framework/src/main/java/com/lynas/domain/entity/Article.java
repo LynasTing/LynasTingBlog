@@ -32,20 +32,26 @@ public class Article {
     private String content;
     // 文章摘要
     private String summary;
+
     // 所属分类id
-    private Long categoryId;
+    private int categoryId;
+
     @TableField(exist = false)
     private String categoryName;
+
+
     // 缩略图
     private String thumbnail;
+
     // 是否置顶（0否，1是）
-    private String isTop;
+    private int isTop;
+
     // 状态（0已发布，1草稿）
-    private String status;
+    private int status;
     // 访问量
     private Long viewCount;
     // 是否允许评论 1是，0否
-    private String isComment;
+    private int isComment;
 
     private Long createBy;
 

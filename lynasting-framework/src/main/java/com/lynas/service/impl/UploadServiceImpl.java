@@ -14,21 +14,21 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 @Service
 @Data
 @ConfigurationProperties(prefix = "oss")
+@Slf4j
 public class UploadServiceImpl implements UploadService {
 
   @Override
   public R uploadImg(MultipartFile img) {
-
     // TODO 判断文件类型及大小
     // 获取文件名，判断出文件类型
     String originalFilename = img.getOriginalFilename();
@@ -39,10 +39,12 @@ public class UploadServiceImpl implements UploadService {
     String filePath = PathUtils.generateFilePath(originalFilename);
     // 上传到七牛云
     String url = uploadQiniuOss(img, filePath);
-    // 返回
-    return R.okResult(url);
+    if(url.equals("上传失败了")) {
+      return R.errorResult(AppHttpCodeEnum.EMAIL_EXIST);
+    }else {
+      return R.okResult(url);
+    }
   }
-
   private String ak;
   private String sk;
   private String bucket;
@@ -78,8 +80,9 @@ public class UploadServiceImpl implements UploadService {
         }
       }
     } catch (Exception ex) {
-      //ignore
+      log.error("ex " + ex);
+      throw new SystemException(AppHttpCodeEnum.CONTENT_IS_NULL);
     }
-    return "上传失败啦！";
+    return "上传失败了";
   }
 }

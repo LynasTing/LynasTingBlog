@@ -40,11 +40,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     articleWrapper.eq(Article::getStatus, SystemConst.ARTICLE_STATUS_NORMAL);
     List<Article> articleList = articleService.list(articleWrapper);
     // 获取文章的分类id，并且去重
-    Set<Long> categoryIds = articleList.stream()
+    Set<Integer> collect1 = articleList.stream()
       .map(article -> article.getCategoryId())
       .collect(Collectors.toSet());
     // 查询分类表
-    List<Category> categories = listByIds(categoryIds);
+    List<Category> categories = listByIds(collect1);
     // 过滤出状态是正常的分类
     List<Category> collect = categories.stream()
       .filter(item -> item.getStatus() == SystemConst.CATEGORY_STATUS_NORMAL)

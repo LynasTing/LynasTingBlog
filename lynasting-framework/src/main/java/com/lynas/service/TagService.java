@@ -5,7 +5,8 @@ import com.lynas.domain.R;
 import com.lynas.domain.entity.Tag;
 import com.lynas.domain.dto.TagQueryDto;
 import com.lynas.domain.vo.TagVo;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * 标签(Tag)表服务接口
@@ -24,5 +25,5 @@ public interface TagService extends IService<Tag> {
 
   R editTag(TagVo arg);
 
-  R<TagVo> getAllTag();
+  List<TagVo> getAllTag();
 }
