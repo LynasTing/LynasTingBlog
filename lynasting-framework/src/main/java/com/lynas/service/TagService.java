@@ -21,4 +21,6 @@ public interface TagService extends IService<Tag> {
   R delTag(Long id);
 
   R<TagVo> echoTag(Long id);
+
+  R editTag(TagVo arg);
 }

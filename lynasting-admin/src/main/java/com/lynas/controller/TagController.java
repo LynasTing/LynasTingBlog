@@ -7,6 +7,7 @@ import com.lynas.domain.vo.PageVo;
 import com.lynas.domain.vo.TagVo;
 import com.lynas.service.TagService;
 import com.lynas.utils.BeanCopyUtils;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,5 +36,10 @@ public class TagController {
   @GetMapping("/{id}")
   public R<TagVo> echoTag(@PathVariable("id") Long id) {
     return tagService.echoTag(id);
+  }
+
+  @PutMapping("/edit")
+  public R editTag(@RequestBody TagVo arg) {
+    return tagService.editTag(arg);
   }
 }

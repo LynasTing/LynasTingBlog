@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 标签(Tag)表服务实现类
@@ -61,6 +62,9 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
    */
   @Override
   public R delTag(Long id) {
+    if(Objects.isNull(id)) {
+      throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+    }
     Tag byId = getById(id);
     byId.setDelFlag(1);
     getBaseMapper().deleteById(id);
@@ -71,9 +75,25 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
    * 数据回显
    */
   @Override
-  public R<TagVo> echoTag(Long id) {
+  public R echoTag(Long id) {
     Tag byId = getById(id);
     TagVo tagVo = BeanCopyUtils.beanCopy(byId, TagVo.class);
     return R.okResult(tagVo);
+  }
+
+  /**
+   * 修改
+   */
+  @Override
+  public R editTag(TagVo arg) {
+    if(Objects.isNull(arg.getId())) {
+      throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+    }
+    if(Objects.isNull(arg.getName())) {
+      throw new SystemException(AppHttpCodeEnum.NICKNAME_IS_NULL);
+    }
+    Tag byId = BeanCopyUtils.beanCopy(arg, Tag.class);
+    updateById(byId);
+    return R.okResult();
   }
 }
