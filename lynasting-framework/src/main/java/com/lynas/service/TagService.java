@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lynas.domain.R;
 import com.lynas.domain.entity.Tag;
 import com.lynas.domain.dto.TagQueryDto;
+import com.lynas.domain.vo.TagVo;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -18,4 +19,6 @@ public interface TagService extends IService<Tag> {
   R addTag(Tag arg);
 
   R delTag(Long id);
+
+  R<TagVo> echoTag(Long id);
 }

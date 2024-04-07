@@ -66,4 +66,14 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     getBaseMapper().deleteById(id);
     return R.okResult();
   }
+
+  /**
+   * 数据回显
+   */
+  @Override
+  public R<TagVo> echoTag(Long id) {
+    Tag byId = getById(id);
+    TagVo tagVo = BeanCopyUtils.beanCopy(byId, TagVo.class);
+    return R.okResult(tagVo);
+  }
 }

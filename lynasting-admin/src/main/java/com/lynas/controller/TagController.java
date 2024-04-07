@@ -4,6 +4,7 @@ import com.lynas.domain.R;
 import com.lynas.domain.dto.TagQueryDto;
 import com.lynas.domain.entity.Tag;
 import com.lynas.domain.vo.PageVo;
+import com.lynas.domain.vo.TagVo;
 import com.lynas.service.TagService;
 import com.lynas.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,10 @@ public class TagController {
   @DeleteMapping("/{id}")
   public R delTag(@PathVariable("id") Long id) {
     return tagService.delTag(id);
+  }
+
+  @GetMapping("/{id}")
+  public R<TagVo> echoTag(@PathVariable("id") Long id) {
+    return tagService.echoTag(id);
   }
 }
