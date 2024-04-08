@@ -27,7 +27,7 @@ public class Category implements Serializable {
     private Long pid;
     //描述
     private String description;
-    //状态0:正常,1禁用
+    //状态 1:正常, 0禁用
     private int status;
 
     private Long createBy;

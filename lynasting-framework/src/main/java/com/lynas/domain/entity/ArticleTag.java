@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.experimental.Accessors;
 
 
 /**
@@ -17,16 +18,15 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 public class ArticleTag implements Serializable {
-        /**
-         * 文章id
-         */
-
+    /**
+     * 文章id
+     */
     private Long articleId;
-        /**
-         * 标签id
-         */
 
+    /**
+     * 标签id
+     */
     private Long tagId;
-
 }

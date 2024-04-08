@@ -3,6 +3,9 @@ package com.lynas.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lynas.domain.R;
 import com.lynas.domain.entity.Category;
+import com.lynas.domain.vo.CategoryVo;
+
+import java.util.List;
 
 /**
  * 分类表(Category)表服务接口
@@ -14,5 +17,5 @@ public interface CategoryService extends IService<Category> {
 
   R getList();
 
-  R getAll();
+  List<CategoryVo> getAll();
 }
