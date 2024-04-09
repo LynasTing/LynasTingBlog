@@ -7,12 +7,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @AllArgsConstructor  // 全参构造
 @NoArgsConstructor
 public class LoginUser implements UserDetails {
   private User user;
+
+  private List<String> permissions;
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return null;

@@ -61,4 +61,8 @@ public class SystemConst {
    */
   public static final int MENU_STATUS_NORMAL = 1;
 
+  /**
+   * 是否是管理员
+   */
+  public static final int IS_ADMIN = 1;
 }
