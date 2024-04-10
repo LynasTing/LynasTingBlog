@@ -3,6 +3,7 @@ package com.lynas.controller;
 import com.lynas.domain.R;
 import com.lynas.domain.dto.ContentArticleDto;
 import com.lynas.domain.dto.PageArticleDto;
+import com.lynas.domain.vo.admin.EchoArticleDetailVo;
 import com.lynas.domain.vo.PageVo;
 import com.lynas.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,21 @@ public class ArticleController {
   @GetMapping("/page")
   public R<PageVo> pageArticle(@ModelAttribute PageArticleDto arg) {
     return articleService.pageArticle(arg);
+  }
+
+  /**
+   * 查询文章详情
+   */
+  @GetMapping("/{id}")
+  public R<EchoArticleDetailVo> getArticleDetail (@PathVariable long id) {
+    return articleService.getArticleDetail(id);
+  }
+
+  /**
+   * 修改文章
+   */
+  @PutMapping("/put")
+  public R putArticle(@RequestBody ContentArticleDto arg) {
+    return articleService.putArticle(arg);
   }
 }

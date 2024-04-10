@@ -11,8 +11,11 @@ import com.lynas.domain.entity.Article;
 import com.lynas.domain.entity.ArticleTag;
 import com.lynas.domain.entity.Category;
 import com.lynas.domain.vo.ArticleDetailVo;
+import com.lynas.domain.vo.admin.EchoArticleDetailVo;
 import com.lynas.domain.vo.ArticleListVo;
 import com.lynas.domain.vo.PageVo;
+import com.lynas.enums.AppHttpCodeEnum;
+import com.lynas.excepion.SystemException;
 import com.lynas.mapper.ArticleMapper;
 import com.lynas.service.ArticleService;
 import com.lynas.service.ArticleTagService;
@@ -27,7 +30,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -130,7 +132,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
   /**
    * 分页查询文章列表
-
    */
 
   @Override
@@ -145,5 +146,34 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     List<ArticleListVo> articleListVos = BeanCopyUtils.beanListCopy(page.getRecords(), ArticleListVo.class);
     return R.okResult(new PageVo(articleListVos, page.getTotal()));
+  }
+
+  /**
+   * 查询文章详情
+   * @param id
+   * @return
+   */
+
+  @Override
+  public R<EchoArticleDetailVo> getArticleDetail(long id) {
+    Article article = getById(id);
+    List<Integer> tagIds = articleTagService.getTagIdByArticleId(id);
+    article.setTags(tagIds);
+    EchoArticleDetailVo articleListVo = BeanCopyUtils.beanCopy(article, EchoArticleDetailVo.class);
+    return R.okResult(articleListVo);
+  }
+
+  /**
+   * 更新文章
+   */
+  @Override
+  public R putArticle(ContentArticleDto arg) {
+    if(Objects.isNull(arg.getId())) {
+      throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+    }
+    // TODO 其它非空判断
+    Article article = BeanCopyUtils.beanCopy(arg, Article.class);
+    updateById(article);
+    return R.okResult();
   }
 }

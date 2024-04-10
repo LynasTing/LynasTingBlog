@@ -17,6 +17,7 @@ import java.util.List;
 @ApiModel(description = "新增博文dto")
 public class ContentArticleDto {
 
+  @ApiModelProperty(notes = "标题 新增不传， 修改传")
   private Long id;
 
   @ApiModelProperty(notes = "标题")

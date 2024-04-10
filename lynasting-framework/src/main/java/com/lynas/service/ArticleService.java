@@ -5,6 +5,7 @@ import com.lynas.domain.R;
 import com.lynas.domain.dto.ContentArticleDto;
 import com.lynas.domain.dto.PageArticleDto;
 import com.lynas.domain.entity.Article;
+import com.lynas.domain.vo.admin.EchoArticleDetailVo;
 
 public interface ArticleService extends IService<Article> {
   R getHot();
@@ -18,4 +19,8 @@ public interface ArticleService extends IService<Article> {
   R addArticle(ContentArticleDto arg);
 
   R pageArticle(PageArticleDto arg);
+
+  R<EchoArticleDetailVo> getArticleDetail(long id);
+
+  R putArticle(ContentArticleDto arg);
 }

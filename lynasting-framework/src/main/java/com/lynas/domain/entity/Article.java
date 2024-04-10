@@ -2,6 +2,7 @@ package com.lynas.domain.entity;
 
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -39,6 +40,9 @@ public class Article {
     @TableField(exist = false)
     private String categoryName;
 
+    // 标签
+    @TableField(exist = false)
+    private List<Integer> tags;
 
     // 缩略图
     private String thumbnail;
