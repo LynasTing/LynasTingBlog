@@ -3,6 +3,7 @@ package com.lynas.domain.entity;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.lynas.domain.vo.RoutesVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -64,6 +65,7 @@ public class Menu implements Serializable {
     // 备注
     private String remark;
 
+    @TableLogic
     private String delFlag;
 
 }

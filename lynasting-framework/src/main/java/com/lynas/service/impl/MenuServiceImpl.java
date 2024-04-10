@@ -3,15 +3,25 @@ package com.lynas.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.constants.SystemConst;
+import com.lynas.domain.R;
+import com.lynas.domain.dto.MenuQueryDto;
+import com.lynas.domain.dto.auth.MenuAddDto;
 import com.lynas.domain.entity.Menu;
+import com.lynas.domain.vo.admin.MenuVo;
+import com.lynas.enums.AppHttpCodeEnum;
+import com.lynas.excepion.SystemException;
 import com.lynas.mapper.MenuMapper;
 import com.lynas.service.MenuService;
+import com.lynas.utils.BeanCopyUtils;
 import com.lynas.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 菜单权限表(Menu)表服务实现类
@@ -53,6 +63,88 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
       menus = menuMapper.selectMenuById(id);
     }
     return filterToTree(menus, 0L);
+  }
+
+  /**
+   * 查询所有菜单
+   */
+  @Override
+  public R queryAllMenu(MenuQueryDto arg) {
+    LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
+
+    wrapper.like(StringUtils.hasText(arg.getMenuName()), Menu::getMenuName, arg.getMenuName());
+    if(null != arg.getStatus() && arg.getStatus() instanceof Integer) {
+      wrapper.eq(Menu::getStatus, arg.getStatus());
+    }
+    wrapper.orderByAsc(Menu::getOrderNum);
+    wrapper.orderByAsc(Menu::getId);
+    List<Menu> menus = list(wrapper);
+    List<MenuVo> menuVos = BeanCopyUtils.beanListCopy(menus, MenuVo.class);
+    return R.okResult(menuVos);
+  }
+
+  @Override
+  public R addMenu(MenuAddDto arg) {
+    if(!StringUtils.hasText(arg.getMenuName())) {
+      throw new SystemException(AppHttpCodeEnum.EMAIL_IS_NULL);
+    }
+
+    // TODO 其它非空判断和表里是否已存在
+
+    Menu menu = BeanCopyUtils.beanCopy(arg, Menu.class);
+    save(menu);
+    return R.okResult();
+  }
+
+  /**
+   * 菜单编辑回显
+   */
+  @Override
+  public R echoMenu(Long id) {
+    if(null == id) {
+      throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+    }
+    Menu byId = getById(id);
+    MenuVo menuVo = BeanCopyUtils.beanCopy(byId, MenuVo.class);
+    return R.okResult(menuVo);
+  }
+
+  /**
+   * 菜单修改
+   */
+  @Override
+  public R putMenu(MenuAddDto arg) {
+    // TODO 各种非空判断，跟新增大概一样
+    if(Objects.equals(arg.getId(), arg.getParentId())) {
+      throw new SystemException(AppHttpCodeEnum.PUBLIC_ERROR);
+    }
+    Menu menu = BeanCopyUtils.beanCopy(arg, Menu.class);
+    getBaseMapper().updateById(menu);
+    return R.okResult();
+  }
+
+  /**
+   * 删除菜单
+   */
+  @Override
+  public R delMenu(Long menuId) {
+
+    LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
+    wrapper.eq(Menu::getParentId, menuId);
+
+    // 如果有子菜单
+    if(count(wrapper) > 0) {
+      throw new SystemException(AppHttpCodeEnum.PUBLIC_ERROR);
+    }
+
+    // 判断当前菜单是否存在
+    Menu byId = getById(menuId);
+    if(null == byId) {
+      throw new SystemException(AppHttpCodeEnum.PUBLIC_ERROR);
+    }
+
+    getBaseMapper().deleteById(byId);
+    return R.okResult();
   }
 
   /**
