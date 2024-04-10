@@ -23,4 +23,6 @@ public interface ArticleService extends IService<Article> {
   R<EchoArticleDetailVo> getArticleDetail(long id);
 
   R putArticle(ContentArticleDto arg);
+
+  R delArticle(Long id);
 }

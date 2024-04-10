@@ -32,7 +32,7 @@ public class ArticleController {
    * 查询文章详情
    */
   @GetMapping("/{id}")
-  public R<EchoArticleDetailVo> getArticleDetail (@PathVariable long id) {
+  public R<EchoArticleDetailVo> getArticleDetail(@PathVariable long id) {
     return articleService.getArticleDetail(id);
   }
 
@@ -42,5 +42,13 @@ public class ArticleController {
   @PutMapping("/put")
   public R putArticle(@RequestBody ContentArticleDto arg) {
     return articleService.putArticle(arg);
+  }
+
+  /**
+   * 删除文章
+   */
+  @DeleteMapping("/{id}")
+  public R delArticle(@PathVariable Long id) {
+    return articleService.delArticle(id);
   }
 }

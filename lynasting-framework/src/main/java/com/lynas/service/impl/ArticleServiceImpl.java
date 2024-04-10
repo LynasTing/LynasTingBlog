@@ -176,4 +176,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     updateById(article);
     return R.okResult();
   }
+
+  /**
+   * 删除文章(逻辑删除)
+   */
+  @Override
+  public R delArticle(Long id) {
+    if(Objects.isNull(id)) {
+      throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+    }
+    Article article = getById(id);
+    article.setDelFlag(1);
+    getBaseMapper().deleteById(id);
+    return R.okResult();
+  }
 }

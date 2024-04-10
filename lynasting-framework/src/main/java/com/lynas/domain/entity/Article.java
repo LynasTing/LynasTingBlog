@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -65,6 +66,7 @@ public class Article {
 
     private Date updateTime;
     // 删除标志（0代表未删除，1代表已删除）
+    @TableLogic
     private Integer delFlag;
 
   public Article(Long id, long viewCount) {
