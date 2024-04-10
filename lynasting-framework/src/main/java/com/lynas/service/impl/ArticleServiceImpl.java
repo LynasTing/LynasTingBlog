@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.constants.SystemConst;
 import com.lynas.domain.R;
 import com.lynas.domain.dto.ContentArticleDto;
+import com.lynas.domain.dto.PageArticleDto;
 import com.lynas.domain.entity.Article;
 import com.lynas.domain.entity.ArticleTag;
 import com.lynas.domain.entity.Category;
@@ -22,6 +23,7 @@ import com.lynas.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -124,5 +126,24 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     articleTagService.saveBatch(collects);
     return R.okResult();
+  }
+
+  /**
+   * 分页查询文章列表
+
+   */
+
+  @Override
+  public R pageArticle(PageArticleDto arg) {
+    LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+
+    wrapper.like(StringUtils.hasText(arg.getTitle()), Article::getTitle, arg.getTitle());
+    wrapper.like(StringUtils.hasText(arg.getSummary()), Article::getTitle, arg.getSummary());
+
+    Page<Article> page = new Page<>(arg.getPageNum(), arg.getPageSize());
+    page(page, wrapper);
+
+    List<ArticleListVo> articleListVos = BeanCopyUtils.beanListCopy(page.getRecords(), ArticleListVo.class);
+    return R.okResult(new PageVo(articleListVos, page.getTotal()));
   }
 }
