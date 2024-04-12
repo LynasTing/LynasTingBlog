@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.domain.R;
 import com.lynas.domain.dto.auth.RolePageDto;
+import com.lynas.domain.dto.auth.RoleStatusDto;
 import com.lynas.domain.vo.PageVo;
 import com.lynas.domain.vo.admin.RolePageVo;
+import com.lynas.enums.AppHttpCodeEnum;
+import com.lynas.excepion.SystemException;
 import com.lynas.mapper.RoleMapper;
 import com.lynas.domain.entity.Role;
 import com.lynas.service.RoleService;
@@ -47,5 +50,19 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     List<RolePageVo> rolePageVos = BeanCopyUtils.beanListCopy(page.getRecords(), RolePageVo.class);
     return R.okResult(new PageVo(rolePageVos, page.getTotal()));
+  }
+
+  /**
+   * 修改角色状态
+   */
+  @Override
+  public R changeStatus(RoleStatusDto arg) {
+    if(Objects.isNull(arg.getRoleId())) {
+      throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+    }
+    Role byId = getById(arg.getRoleId());
+    byId.setStatus(arg.getStatus());
+    getBaseMapper().updateById(byId);
+    return R.okResult();
   }
 }
