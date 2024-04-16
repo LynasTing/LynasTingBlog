@@ -3,6 +3,7 @@ package com.lynas.controller.auth;
 import com.lynas.domain.R;
 import com.lynas.domain.dto.MenuQueryDto;
 import com.lynas.domain.dto.auth.MenuAddDto;
+import com.lynas.domain.vo.admin.MenuTreeVo;
 import com.lynas.domain.vo.admin.MenuVo;
 import com.lynas.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,13 @@ public class MenuController {
   @DeleteMapping("/delete/{menuId}")
   public R delMenu (@PathVariable("menuId") Long menuId) {
     return menuService.delMenu(menuId);
+  }
+
+  /**
+   * 查询菜单树接口
+   */
+  @GetMapping("/treeSelect")
+  public R queryTreeSelect() {
+    return menuService.queryTreeSelect();
   }
 }

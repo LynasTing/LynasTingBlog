@@ -2,6 +2,7 @@ package com.lynas.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lynas.domain.R;
+import com.lynas.domain.dto.auth.RoleAddDto;
 import com.lynas.domain.dto.auth.RolePageDto;
 import com.lynas.domain.dto.auth.RoleStatusDto;
 import com.lynas.domain.entity.Role;
@@ -20,4 +21,6 @@ public interface RoleService extends IService<Role> {
   R pageRole(RolePageDto arg);
 
   R changeStatus(RoleStatusDto arg);
+
+  R addMenu(RoleAddDto arg);
 }

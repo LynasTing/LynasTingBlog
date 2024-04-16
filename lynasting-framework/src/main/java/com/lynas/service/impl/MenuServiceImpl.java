@@ -7,6 +7,7 @@ import com.lynas.domain.R;
 import com.lynas.domain.dto.MenuQueryDto;
 import com.lynas.domain.dto.auth.MenuAddDto;
 import com.lynas.domain.entity.Menu;
+import com.lynas.domain.vo.admin.MenuTreeVo;
 import com.lynas.domain.vo.admin.MenuVo;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.excepion.SystemException;
@@ -39,7 +40,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
   @Override
   public List<String> selectPermsById(Long id) {
     // 如果用户id为1代表是超级管理员，返回所有可用权限
-    if(SecurityUtils.isAdmin()) {
+    if (SecurityUtils.isAdmin()) {
       LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
       // 使用 LambdaQueryWrapper.in方法，可以查多个条件
       wrapper.in(Menu::getMenuType, SystemConst.MENU_TYPE_C, SystemConst.MENU_TYPE_F);
@@ -73,7 +74,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
 
     wrapper.like(StringUtils.hasText(arg.getMenuName()), Menu::getMenuName, arg.getMenuName());
-    if(null != arg.getStatus() && arg.getStatus() instanceof Integer) {
+    if (null != arg.getStatus() && arg.getStatus() instanceof Integer) {
       wrapper.eq(Menu::getStatus, arg.getStatus());
     }
     wrapper.orderByAsc(Menu::getOrderNum);
@@ -85,7 +86,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
   @Override
   public R addMenu(MenuAddDto arg) {
-    if(!StringUtils.hasText(arg.getMenuName())) {
+    if (!StringUtils.hasText(arg.getMenuName())) {
       throw new SystemException(AppHttpCodeEnum.EMAIL_IS_NULL);
     }
 
@@ -101,7 +102,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
    */
   @Override
   public R echoMenu(Long id) {
-    if(null == id) {
+    if (null == id) {
       throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
     }
     Menu byId = getById(id);
@@ -115,7 +116,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
   @Override
   public R putMenu(MenuAddDto arg) {
     // TODO 各种非空判断，跟新增大概一样
-    if(Objects.equals(arg.getId(), arg.getParentId())) {
+    if (Objects.equals(arg.getId(), arg.getParentId())) {
       throw new SystemException(AppHttpCodeEnum.PUBLIC_ERROR);
     }
     Menu menu = BeanCopyUtils.beanCopy(arg, Menu.class);
@@ -133,13 +134,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     wrapper.eq(Menu::getParentId, menuId);
 
     // 如果有子菜单
-    if(count(wrapper) > 0) {
+    if (count(wrapper) > 0) {
       throw new SystemException(AppHttpCodeEnum.PUBLIC_ERROR);
     }
 
     // 判断当前菜单是否存在
     Menu byId = getById(menuId);
-    if(null == byId) {
+    if (null == byId) {
       throw new SystemException(AppHttpCodeEnum.PUBLIC_ERROR);
     }
 
@@ -153,7 +154,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
   private List<Menu> filterToTree(List<Menu> menus, Long pid) {
     List<Menu> collects = menus.stream()
       .filter(item -> item.getParentId().equals(pid))
-      .map(item -> item.setChildren(getChildren(item, menus)))
+      .peek(item -> item.setChildren(getChildren(item, menus)))
       .collect(Collectors.toList());
     return collects;
   }
@@ -164,8 +165,23 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
   private List<Menu> getChildren(Menu item, List<Menu> menus) {
     List<Menu> result = menus.stream()
       .filter(sub -> sub.getParentId().equals(item.getId()))
-      .map(sub -> sub.setChildren(getChildren(sub, menus)))
+      .peek(sub -> sub.setChildren(getChildren(sub, menus)))
       .collect(Collectors.toList());
     return result;
+  }
+
+  /**
+   * 查询菜单树接口
+   */
+  public R queryTreeSelect() {
+    // TODO 拿到所有数据
+    List<Menu> menus = getBaseMapper().selectAllMenu();
+    // TODO 为label赋值
+    menus.forEach(item -> item.setLabel(item.getMenuName()));
+    // TODO 转成树
+    List<Menu> treeMenu = filterToTree(menus, 0L);
+    // TODO bean拷贝
+    List<MenuTreeVo> menuTreeVos = BeanCopyUtils.beanListCopy(treeMenu, MenuTreeVo.class);
+    return R.okResult(menuTreeVos);
   }
 }

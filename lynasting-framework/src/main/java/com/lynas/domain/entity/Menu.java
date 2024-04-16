@@ -30,6 +30,9 @@ public class Menu implements Serializable {
     // 子集
     @TableField(exist = false)
     private List<Menu> children;
+    // 子集
+    @TableField(exist = false)
+    private String label;
     // 菜单ID
     private Long id;
     // 菜单名称

@@ -1,6 +1,7 @@
 package com.lynas.controller.auth;
 
 import com.lynas.domain.R;
+import com.lynas.domain.dto.auth.RoleAddDto;
 import com.lynas.domain.dto.auth.RolePageDto;
 import com.lynas.domain.dto.auth.RoleStatusDto;
 import com.lynas.service.RoleService;
@@ -27,5 +28,13 @@ public class RoleController {
   @PutMapping("/status")
   public R changeStatus(@RequestBody RoleStatusDto arg) {
     return roleService.changeStatus(arg);
+  }
+
+  /**
+   * 新增角色
+   */
+  @PostMapping("/add")
+  public R addMenu(@RequestBody RoleAddDto arg) {
+    return roleService.addMenu(arg);
   }
 }

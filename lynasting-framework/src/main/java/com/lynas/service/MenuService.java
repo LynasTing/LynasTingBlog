@@ -6,6 +6,7 @@ import com.lynas.domain.dto.MenuQueryDto;
 import com.lynas.domain.dto.auth.MenuAddDto;
 import com.lynas.domain.entity.Menu;
 import com.lynas.domain.vo.RoutesVo;
+import com.lynas.domain.vo.admin.MenuTreeVo;
 import com.lynas.domain.vo.admin.MenuVo;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public interface MenuService extends IService<Menu> {
   R putMenu(MenuAddDto arg);
 
   R delMenu(Long menuId);
+
+  R queryTreeSelect();
 }
