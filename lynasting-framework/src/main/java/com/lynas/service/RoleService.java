@@ -22,5 +22,9 @@ public interface RoleService extends IService<Role> {
 
   R changeStatus(RoleStatusDto arg);
 
-  R addMenu(RoleAddDto arg);
+  R echoRole(Long id);
+
+  R addRole(RoleAddDto arg);
+
+  R putRole(RoleAddDto arg);
 }

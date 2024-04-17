@@ -30,4 +30,7 @@ public class RoleAddDto {
 
   @ApiModelProperty(notes = "菜单集")
   private List<Long> menuIds;
+
+  @ApiModelProperty(notes = "角色id，修改传")
+  private Long id;
 }

@@ -34,7 +34,25 @@ public class RoleController {
    * 新增角色
    */
   @PostMapping("/add")
-  public R addMenu(@RequestBody RoleAddDto arg) {
-    return roleService.addMenu(arg);
+  public R addRole(@RequestBody RoleAddDto arg) {
+    return roleService.addRole(arg);
   }
+
+  /**
+   * 角色回显
+   */
+  @GetMapping("/echo/{id}")
+  public R echoRole(@PathVariable("id") Long id) {
+    return roleService.echoRole(id);
+  }
+
+  /**、
+   * 修改角色
+   */
+  @PutMapping("/put")
+  public R putRole(@RequestBody RoleAddDto arg) {
+    return roleService.putRole(arg);
+  }
+
+
 }

@@ -34,4 +34,6 @@ public interface MenuService extends IService<Menu> {
   R delMenu(Long menuId);
 
   R queryTreeSelect();
+
+  R queryRoleMenuSelect(Long id);
 }

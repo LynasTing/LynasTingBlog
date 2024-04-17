@@ -1,25 +1,32 @@
 package com.lynas.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.constants.SystemConst;
 import com.lynas.domain.R;
 import com.lynas.domain.dto.MenuQueryDto;
 import com.lynas.domain.dto.auth.MenuAddDto;
 import com.lynas.domain.entity.Menu;
+import com.lynas.domain.entity.RoleMenu;
 import com.lynas.domain.vo.admin.MenuTreeVo;
 import com.lynas.domain.vo.admin.MenuVo;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.excepion.SystemException;
 import com.lynas.mapper.MenuMapper;
 import com.lynas.service.MenuService;
+import com.lynas.service.RoleMenuService;
 import com.lynas.utils.BeanCopyUtils;
 import com.lynas.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,6 +40,9 @@ import java.util.stream.Stream;
 @Service
 @Slf4j
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
+
+  @Autowired
+  private RoleMenuService roleMenuService;
 
   /**
    * 查询用户所拥有的权限，要求是所有菜单类型为C或F的、状态正常的、未被删除的
@@ -183,5 +193,23 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     // TODO bean拷贝
     List<MenuTreeVo> menuTreeVos = BeanCopyUtils.beanListCopy(treeMenu, MenuTreeVo.class);
     return R.okResult(menuTreeVos);
+  }
+
+  /**
+   * 获取所有菜单及角色已关联菜单
+   */
+  @Override
+  public R queryRoleMenuSelect(Long id) {
+    List<Menu> menus = getBaseMapper().selectAllMenu();
+    menus.forEach(item -> item.setLabel(item.getMenuName()));
+    List<Menu> treeMenu = filterToTree(menus, 0L);
+    List<MenuTreeVo> menuTreeVos = BeanCopyUtils.beanListCopy(treeMenu, MenuTreeVo.class);
+    List<Long> checkedKeys = roleMenuService.list(Wrappers.<RoleMenu>lambdaQuery().eq(RoleMenu::getRoleId, id)).stream()
+      .map(item -> item.getMenuId())
+      .collect(Collectors.toList());
+    Map<String, Object> map = new HashMap<>();
+    map.put("menus", menuTreeVos);
+    map.put("checkedKeys", checkedKeys);
+    return R.okResult(map);
   }
 }

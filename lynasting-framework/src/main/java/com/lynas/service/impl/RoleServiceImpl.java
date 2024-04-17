@@ -1,6 +1,7 @@
 package com.lynas.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.domain.R;
@@ -9,12 +10,12 @@ import com.lynas.domain.dto.auth.RolePageDto;
 import com.lynas.domain.dto.auth.RoleStatusDto;
 import com.lynas.domain.entity.RoleMenu;
 import com.lynas.domain.vo.PageVo;
+import com.lynas.domain.vo.admin.EchoRoleVo;
 import com.lynas.domain.vo.admin.RolePageVo;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.excepion.SystemException;
 import com.lynas.mapper.RoleMapper;
 import com.lynas.domain.entity.Role;
-import com.lynas.mapper.RoleMenuMapper;
 import com.lynas.service.RoleMenuService;
 import com.lynas.service.RoleService;
 import com.lynas.utils.BeanCopyUtils;
@@ -79,7 +80,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
    * 新增角色
    */
   @Override
-  public R addMenu(RoleAddDto arg) {
+  public R addRole(RoleAddDto arg) {
     Role role = BeanCopyUtils.beanCopy(arg, Role.class);
     save(role);
 
@@ -89,5 +90,36 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     roleMenuService.saveBatch(collect);
     return R.okResult();
+  }
+
+  /**
+   * 更新角色
+   */
+  @Override
+  public R putRole(RoleAddDto arg) {
+    if (Objects.isNull(arg.getId())) {
+      throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+    }
+    List<RoleMenu> collect = arg.getMenuIds().stream()
+      .map(item -> new RoleMenu(arg.getId(), item))
+      .collect(Collectors.toList());
+    roleMenuService.remove(Wrappers.<RoleMenu> lambdaQuery().eq(RoleMenu::getRoleId, arg.getId()));
+    roleMenuService.saveBatch(collect);
+    Role role = BeanCopyUtils.beanCopy(arg, Role.class);
+    getBaseMapper().updateById(role);
+    return R.okResult();
+  }
+
+  /**
+   * 角色回显
+   */
+  @Override
+  public R echoRole(Long id) {
+    if(Objects.isNull(id)) {
+      throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+    }
+    Role byId = getById(id);
+    EchoRoleVo echoRoleVo = BeanCopyUtils.beanCopy(byId, EchoRoleVo.class);
+    return R.okResult(echoRoleVo);
   }
 }

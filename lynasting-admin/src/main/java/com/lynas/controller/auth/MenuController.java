@@ -66,4 +66,12 @@ public class MenuController {
   public R queryTreeSelect() {
     return menuService.queryTreeSelect();
   }
+
+  /**
+   * 获取所有菜单及角色已关联菜单
+   */
+  @GetMapping("/roleMenuTreeSelect/{id}")
+  public R queryRoleMenuSelect(@PathVariable("id") Long id) {
+    return menuService.queryRoleMenuSelect(id);
+  }
 }
