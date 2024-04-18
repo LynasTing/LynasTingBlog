@@ -153,7 +153,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     if (null == byId) {
       throw new SystemException(AppHttpCodeEnum.PUBLIC_ERROR);
     }
-
     getBaseMapper().deleteById(byId);
     return R.okResult();
   }

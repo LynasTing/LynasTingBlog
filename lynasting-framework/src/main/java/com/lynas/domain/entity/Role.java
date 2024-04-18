@@ -1,6 +1,8 @@
 package com.lynas.domain.entity;
 
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +32,7 @@ public class Role implements Serializable {
     // 角色状态（1正常 0停用）
     private Integer status;
     // 删除标志（0代表存在 1代表删除）
+    @TableLogic
     private Integer delFlag;
     // 创建者
     private Long createBy;

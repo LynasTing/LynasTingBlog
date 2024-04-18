@@ -21,6 +21,8 @@ import com.lynas.service.RoleService;
 import com.lynas.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -108,6 +110,25 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     Role role = BeanCopyUtils.beanCopy(arg, Role.class);
     getBaseMapper().updateById(role);
     return R.okResult();
+  }
+
+  /**
+   * 删除角色
+   */
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public R delRole(Long id) {
+    try {
+      if (Objects.isNull(id)) {
+        throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+      }
+      getBaseMapper().deleteById(id);
+      return R.okResult();
+    }catch (Exception e) {
+      e.printStackTrace();
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+    }
   }
 
   /**

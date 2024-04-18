@@ -46,7 +46,7 @@ public class RoleController {
     return roleService.echoRole(id);
   }
 
-  /**、
+  /**
    * 修改角色
    */
   @PutMapping("/put")
@@ -54,5 +54,11 @@ public class RoleController {
     return roleService.putRole(arg);
   }
 
-
+  /**
+   * 删除角色
+   */
+  @DeleteMapping("/del/{id}")
+  public R delRole(@PathVariable("id") Long id) {
+    return roleService.delRole(id);
+  }
 }
