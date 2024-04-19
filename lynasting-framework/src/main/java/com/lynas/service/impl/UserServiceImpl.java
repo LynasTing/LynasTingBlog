@@ -1,9 +1,13 @@
 package com.lynas.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.domain.R;
+import com.lynas.domain.dto.auth.UserPageDto;
+import com.lynas.domain.vo.PageVo;
 import com.lynas.domain.vo.UserInfoVo;
+import com.lynas.domain.vo.admin.UserPageVo;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.excepion.SystemException;
 import com.lynas.mapper.UserMapper;
@@ -15,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 用户表(User)表服务实现类
@@ -71,6 +78,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     // 插入
     save(user);
     return R.okResult();
+  }
+
+  /**
+   * 分页查询用户列表
+   */
+  @Override
+  public R pageUser(UserPageDto arg) {
+    LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+    wrapper.like(StringUtils.hasText(arg.getUsername()), User::getUsername, arg.getUsername());
+    if(!Objects.isNull(arg.getStatus())) {
+      wrapper.eq(User::getStatus, arg.getStatus());
+    }
+    if(!Objects.isNull(arg.getPhoneNum())) {
+      wrapper.eq(User::getPhoneNum, arg.getPhoneNum());
+    }
+    Page<User> page = new Page(arg.getPageNum(), arg.getPageSize());
+    page(page, wrapper);
+    List<UserPageVo> userPageVos = BeanCopyUtils.beanListCopy(page.getRecords(), UserPageVo.class);
+    return R.okResult(new PageVo(userPageVos, page.getTotal()));
   }
 
   private boolean usernameExist(String username) {

@@ -2,6 +2,7 @@ package com.lynas.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lynas.domain.R;
+import com.lynas.domain.dto.auth.UserPageDto;
 import com.lynas.domain.entity.User;
 
 /**
@@ -17,4 +18,6 @@ public interface UserService extends IService<User> {
   R putUserInfo(User user);
 
   R register(User user);
+
+  R pageUser(UserPageDto arg);
 }
