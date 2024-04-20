@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,4 +47,8 @@ public class UserEditVo {
   @NotNull
   @ApiModelProperty(notes = "用户性别 1男，2女，3未知")
   private int sex;
+
+  @NotNull
+  @ApiModelProperty(notes = "角色")
+  private List<Long> roleIds;
 }
