@@ -29,4 +29,11 @@ public class UserController {
     return userService.addUser(arg);
   }
 
+  /**
+   * 删除用户
+   */
+  @DeleteMapping("/del/{id}")
+  public R delUser(@PathVariable Long id) {
+    return userService.delUser(id);
+  }
 }

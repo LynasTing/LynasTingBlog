@@ -144,6 +144,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
   }
 
+  /**
+   * 删除用户
+   */
+  @Override
+  public R delUser(Long id) {
+    if(Objects.isNull(id)) {
+      throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+    }
+    User user = getById(id);
+    user.setDelFlag(1);
+    getBaseMapper().deleteById(user);
+    return R.okResult();
+  }
+
   private boolean usernameExist(String username) {
     LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
     queryWrapper.eq(User::getUsername, username);

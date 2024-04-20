@@ -23,4 +23,6 @@ public interface UserService extends IService<User> {
   R pageUser(UserPageDto arg);
 
   R addUser(UserEditVo arg);
+
+  R delUser(Long id);
 }
