@@ -61,4 +61,12 @@ public class RoleController {
   public R delRole(@PathVariable("id") Long id) {
     return roleService.delRole(id);
   }
+
+  /**
+   * 查询所有角色字典
+   */
+  @GetMapping("/get")
+  public R getAllRole() {
+    return roleService.getAllRole();
+  }
 }

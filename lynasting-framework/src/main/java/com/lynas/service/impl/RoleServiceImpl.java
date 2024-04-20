@@ -11,6 +11,7 @@ import com.lynas.domain.dto.auth.RoleStatusDto;
 import com.lynas.domain.entity.RoleMenu;
 import com.lynas.domain.vo.PageVo;
 import com.lynas.domain.vo.admin.EchoRoleVo;
+import com.lynas.domain.vo.admin.RoleGetVo;
 import com.lynas.domain.vo.admin.RolePageVo;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.excepion.SystemException;
@@ -129,6 +130,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
       TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
       return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
     }
+  }
+
+  /**
+   * 角色列表字典
+   */
+  @Override
+  public R getAllRole() {
+    LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
+    // 使用select方法可以指定需要查询的字段
+    wrapper.select(Role::getId, Role::getRoleName, Role::getStatus);
+    List<RoleGetVo> roleGetVos = BeanCopyUtils.beanListCopy(list(wrapper), RoleGetVo.class);
+    return R.okResult(roleGetVos);
   }
 
   /**
