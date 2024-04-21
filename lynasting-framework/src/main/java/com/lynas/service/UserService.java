@@ -25,4 +25,6 @@ public interface UserService extends IService<User> {
   R addUser(UserEditVo arg);
 
   R delUser(Long id);
+
+  R echoUser(Long id);
 }

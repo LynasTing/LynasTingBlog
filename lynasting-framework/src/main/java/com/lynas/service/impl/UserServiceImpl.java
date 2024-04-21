@@ -6,14 +6,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.domain.R;
 import com.lynas.domain.dto.auth.UserEditVo;
 import com.lynas.domain.dto.auth.UserPageDto;
+import com.lynas.domain.entity.Role;
 import com.lynas.domain.entity.UserRole;
 import com.lynas.domain.vo.PageVo;
 import com.lynas.domain.vo.UserInfoVo;
+import com.lynas.domain.vo.admin.RoleGetVo;
 import com.lynas.domain.vo.admin.UserPageVo;
 import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.excepion.SystemException;
 import com.lynas.mapper.UserMapper;
 import com.lynas.domain.entity.User;
+import com.lynas.service.RoleService;
 import com.lynas.service.UserRoleService;
 import com.lynas.service.UserService;
 import com.lynas.utils.BeanCopyUtils;
@@ -25,7 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -40,7 +45,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
   @Autowired
   private UserRoleService userRoleService;
-
+  @Autowired
+  private RoleService roleService;
   @Override
   public R getUserInfo() {
     // 拿到id
@@ -156,6 +162,45 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     user.setDelFlag(1);
     getBaseMapper().deleteById(user);
     return R.okResult();
+  }
+
+  /**
+   * 回显用户
+   */
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public R echoUser(Long id) {
+    try {
+      if(Objects.isNull(id)) {
+        throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+      }
+      // 用户关联的角色列表
+      LambdaQueryWrapper<UserRole> urWrapper = new LambdaQueryWrapper<>();
+      urWrapper.eq(UserRole::getUserId, id);
+      List<Long> roleIds = userRoleService.list(urWrapper)
+        .stream()
+        .map(item -> item.getRoleId())
+        .collect(Collectors.toList());
+
+      // 所有角色列表
+      LambdaQueryWrapper<Role> rWrapper = new LambdaQueryWrapper<>();
+      rWrapper.select(Role::getId, Role::getRoleName, Role::getStatus);
+      List<Role> list = roleService.list(rWrapper);
+      List<RoleGetVo> collects = list
+        .stream()
+        .map(item -> BeanCopyUtils.beanCopy(item, RoleGetVo.class))
+        .collect(Collectors.toList());
+      // 用户信息
+      User user = getById(id);
+      Map<String, Object> map = new HashMap<>();
+      map.put("roleIds", roleIds);
+      map.put("roles", collects);
+      map.put("user", user);
+      return R.okResult(map);
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
+    }
   }
 
   private boolean usernameExist(String username) {

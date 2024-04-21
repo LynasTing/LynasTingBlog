@@ -36,4 +36,12 @@ public class UserController {
   public R delUser(@PathVariable Long id) {
     return userService.delUser(id);
   }
+
+  /**
+   * 修改回显
+   */
+  @GetMapping("/echo/{id}")
+  public R echoUser(@PathVariable Long id) {
+    return userService.echoUser(id);
+  }
 }
