@@ -1,10 +1,12 @@
 package com.lynas.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.domain.R;
-import com.lynas.domain.dto.auth.UserEditVo;
+import com.lynas.domain.dto.auth.UserAddDto;
+import com.lynas.domain.dto.auth.UserEditDto;
 import com.lynas.domain.dto.auth.UserPageDto;
 import com.lynas.domain.entity.Role;
 import com.lynas.domain.entity.UserRole;
@@ -119,7 +121,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
    */
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public R addUser(UserEditVo arg) {
+  public R addUser(UserAddDto arg) {
     try {
       // TODO 各种非空校验
       if(!StringUtils.hasText(arg.getUsername())) {
@@ -201,6 +203,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
       e.printStackTrace();
       throw new RuntimeException(e.getMessage());
     }
+  }
+
+  /**
+   * 修改用户
+   */
+  @Override
+  public R editUser(UserEditDto arg) {
+    // TODO 各种非空判断
+    if(Objects.isNull(arg.getId())) {
+      throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+    }
+    // 清空原来的关联表的数据
+    userRoleService.remove(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, arg.getId()));
+    // 插入新的关联表数据
+    List<UserRole> collects = arg.getRoleIds().stream()
+      .map(item -> new UserRole(arg.getId(), item))
+      .collect(Collectors.toList());
+    userRoleService.saveBatch(collects);
+    // 更新角色信息， 保存修改
+    getBaseMapper().updateById(BeanCopyUtils.beanCopy(arg, User.class));
+    return R.okResult();
   }
 
   private boolean usernameExist(String username) {

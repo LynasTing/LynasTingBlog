@@ -1,7 +1,8 @@
 package com.lynas.controller.auth;
 
 import com.lynas.domain.R;
-import com.lynas.domain.dto.auth.UserEditVo;
+import com.lynas.domain.dto.auth.UserAddDto;
+import com.lynas.domain.dto.auth.UserEditDto;
 import com.lynas.domain.dto.auth.UserPageDto;
 import com.lynas.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class UserController {
    * 新增用户
    */
   @PostMapping("/add")
-  public R addUer(@RequestBody UserEditVo arg) {
+  public R addUer(@RequestBody UserAddDto arg) {
     return userService.addUser(arg);
   }
 
@@ -43,5 +44,13 @@ public class UserController {
   @GetMapping("/echo/{id}")
   public R echoUser(@PathVariable Long id) {
     return userService.echoUser(id);
+  }
+
+  /**
+   * 修改用户
+   */
+  @PutMapping("/edit")
+  public R editUser(@RequestBody UserEditDto arg) {
+    return userService.editUser(arg);
   }
 }

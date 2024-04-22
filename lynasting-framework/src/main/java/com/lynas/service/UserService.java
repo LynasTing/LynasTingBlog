@@ -2,7 +2,8 @@ package com.lynas.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lynas.domain.R;
-import com.lynas.domain.dto.auth.UserEditVo;
+import com.lynas.domain.dto.auth.UserAddDto;
+import com.lynas.domain.dto.auth.UserEditDto;
 import com.lynas.domain.dto.auth.UserPageDto;
 import com.lynas.domain.entity.User;
 
@@ -22,9 +23,11 @@ public interface UserService extends IService<User> {
 
   R pageUser(UserPageDto arg);
 
-  R addUser(UserEditVo arg);
+  R addUser(UserAddDto arg);
 
   R delUser(Long id);
 
   R echoUser(Long id);
+
+  R editUser(UserEditDto arg);
 }

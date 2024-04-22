@@ -12,11 +12,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "新增/修改用户")
-public class UserEditVo {
-  @ApiModelProperty(notes = "id 修改传")
-  private Long id;
-
+@ApiModel(description = "新增用户")
+public class UserAddDto {
   @NotNull
   @ApiModelProperty(notes = "用户名")
   private String username;
