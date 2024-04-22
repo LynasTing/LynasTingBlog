@@ -22,5 +22,5 @@ public class RolePageDto {
   private String roleName;
 
   @ApiModelProperty(notes = "账号状态（0正常 1停用）")
-  private int status;
+  private Integer status;
 }

@@ -54,7 +54,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
   public R pageRole(RolePageDto arg) {
     LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
     wrapper.like(StringUtils.hasText(arg.getRoleName()), Role::getRoleName, arg.getRoleName());
-    wrapper.eq(!Objects.isNull(arg.getStatus()), Role::getStatus, arg.getStatus());
+    if(!Objects.isNull(arg.getStatus())) {
+      wrapper.eq(Role::getStatus, arg.getStatus());
+    }
 
     wrapper.orderByAsc(Role::getRoleSort);
 
