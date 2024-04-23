@@ -1,10 +1,14 @@
 package com.lynas.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.constants.SystemConst;
 import com.lynas.domain.R;
+import com.lynas.domain.dto.content.CategoryPageDto;
 import com.lynas.domain.entity.Article;
+import com.lynas.domain.vo.PageVo;
+import com.lynas.domain.vo.content.CategoryPageVo;
 import com.lynas.mapper.CategoryMapper;
 import com.lynas.domain.entity.Category;
 import com.lynas.service.ArticleService;
@@ -13,8 +17,10 @@ import com.lynas.utils.BeanCopyUtils;
 import com.lynas.domain.vo.CategoryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -65,5 +71,21 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     List<Category> list = list(wrapper);
     List<CategoryVo> categoryVos = BeanCopyUtils.beanListCopy(list, CategoryVo.class);
     return categoryVos;
+  }
+
+  /**
+   * 分页查询分类
+   */
+  @Override
+  public R pageCategory(CategoryPageDto arg) {
+    LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
+    if(!Objects.isNull(arg.getStatus())) {
+      wrapper.eq(Category::getStatus, arg.getStatus());
+    }
+    wrapper.like(StringUtils.hasText(arg.getName()), Category::getName, arg.getName());
+    Page<Category> page = new Page(arg.getPageNum(), arg.getPageSize());
+    page(page, wrapper);
+    List<CategoryPageVo> categoryPageVos = BeanCopyUtils.beanListCopy(page.getRecords(), CategoryPageVo.class);
+    return R.okResult(new PageVo(categoryPageVos, page.getTotal()));
   }
 }
