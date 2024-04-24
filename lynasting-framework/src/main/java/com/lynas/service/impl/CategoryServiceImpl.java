@@ -11,6 +11,7 @@ import com.lynas.domain.entity.Article;
 import com.lynas.domain.vo.PageVo;
 import com.lynas.domain.vo.content.CategoryPageVo;
 import com.lynas.enums.AppHttpCodeEnum;
+import com.lynas.excepion.SystemException;
 import com.lynas.mapper.CategoryMapper;
 import com.lynas.domain.entity.Category;
 import com.lynas.service.ArticleService;
@@ -104,6 +105,26 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
       save(category);
       return R.okResult();
     }catch (Exception e) {
+      e.printStackTrace();
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+    }
+  }
+
+  /**
+   * 分类回显
+   */
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public R echoCategory(Long id) {
+    try {
+      if (Objects.isNull(id)) {
+        throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+      }
+      Category byId = getById(id);
+      CategoryPageVo categoryPageVo = BeanCopyUtils.beanCopy(byId, CategoryPageVo.class);
+      return R.okResult(categoryPageVo);
+    } catch (Exception e) {
       e.printStackTrace();
       TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
       return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);

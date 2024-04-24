@@ -12,6 +12,9 @@ import org.jetbrains.annotations.NotNull;
 @NoArgsConstructor
 @ApiModel(description = "新增、修改分类")
 public class CategoryEditDto {
+  @ApiModelProperty(notes = "修改传")
+  private Long id;
+
   @NotNull
   @ApiModelProperty(notes = "分类名")
   private String name;

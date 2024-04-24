@@ -4,6 +4,7 @@ import com.lynas.domain.R;
 import com.lynas.domain.dto.content.CategoryEditDto;
 import com.lynas.domain.dto.content.CategoryPageDto;
 import com.lynas.service.CategoryService;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +29,13 @@ public class AdminCategoryController {
   @PostMapping("/add")
   public R addCategory(@RequestBody CategoryEditDto arg) {
     return categoryService.addCategory(arg);
+  }
+
+  /**
+   * 分类回显
+   */
+  @GetMapping("/echo/{id}")
+  public R echoCategory(@PathVariable Long id) {
+    return categoryService.echoCategory(id);
   }
 }

@@ -24,4 +24,6 @@ public interface CategoryService extends IService<Category> {
   R pageCategory(CategoryPageDto arg);
 
   R addCategory(CategoryEditDto arg);
+
+  R echoCategory(Long id);
 }
