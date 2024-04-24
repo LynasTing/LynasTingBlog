@@ -2,6 +2,7 @@ package com.lynas.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lynas.domain.R;
+import com.lynas.domain.dto.content.CategoryEditDto;
 import com.lynas.domain.dto.content.CategoryPageDto;
 import com.lynas.domain.entity.Category;
 import com.lynas.domain.vo.CategoryVo;
@@ -21,4 +22,6 @@ public interface CategoryService extends IService<Category> {
   List<CategoryVo> getAll();
 
   R pageCategory(CategoryPageDto arg);
+
+  R addCategory(CategoryEditDto arg);
 }

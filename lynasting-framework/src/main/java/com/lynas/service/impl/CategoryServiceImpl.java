@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.constants.SystemConst;
 import com.lynas.domain.R;
+import com.lynas.domain.dto.content.CategoryEditDto;
 import com.lynas.domain.dto.content.CategoryPageDto;
 import com.lynas.domain.entity.Article;
 import com.lynas.domain.vo.PageVo;
 import com.lynas.domain.vo.content.CategoryPageVo;
+import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.mapper.CategoryMapper;
 import com.lynas.domain.entity.Category;
 import com.lynas.service.ArticleService;
@@ -17,6 +19,8 @@ import com.lynas.utils.BeanCopyUtils;
 import com.lynas.domain.vo.CategoryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -87,5 +91,22 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     page(page, wrapper);
     List<CategoryPageVo> categoryPageVos = BeanCopyUtils.beanListCopy(page.getRecords(), CategoryPageVo.class);
     return R.okResult(new PageVo(categoryPageVos, page.getTotal()));
+  }
+
+  /**
+   * 新增分类
+   */
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public R addCategory(CategoryEditDto arg) {
+    try {
+      Category category = BeanCopyUtils.beanCopy(arg, Category.class);
+      save(category);
+      return R.okResult();
+    }catch (Exception e) {
+      e.printStackTrace();
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+    }
   }
 }
