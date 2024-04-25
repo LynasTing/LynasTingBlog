@@ -38,4 +38,12 @@ public class AdminCategoryController {
   public R echoCategory(@PathVariable Long id) {
     return categoryService.echoCategory(id);
   }
+
+  /**
+   * 更新分类
+   */
+  @PutMapping("/put")
+  public R putCategory(@RequestBody CategoryEditDto arg) {
+    return categoryService.putCategory(arg);
+  }
 }

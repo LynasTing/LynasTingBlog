@@ -130,4 +130,23 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
       return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
     }
   }
+
+  /**
+   * 更新分类
+   */
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public R putCategory(CategoryEditDto arg) {
+    try {
+      if (Objects.isNull(arg.getId())) {
+        throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+      }
+      Category category = BeanCopyUtils.beanCopy(arg, Category.class);
+      getBaseMapper().updateById(category);
+      return R.okResult();
+    }catch (Exception e) {
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+    }
+  }
 }
