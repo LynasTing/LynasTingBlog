@@ -46,4 +46,12 @@ public class AdminCategoryController {
   public R putCategory(@RequestBody CategoryEditDto arg) {
     return categoryService.putCategory(arg);
   }
+
+  /**
+   * 删除分类
+   */
+  @DeleteMapping("/del/{id}")
+  public R delCategory(@PathVariable Long id) {
+    return categoryService.delCategory(id);
+  }
 }

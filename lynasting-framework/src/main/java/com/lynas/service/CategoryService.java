@@ -28,4 +28,6 @@ public interface CategoryService extends IService<Category> {
   R echoCategory(Long id);
 
   R putCategory(CategoryEditDto arg);
+
+  R delCategory(Long id);
 }

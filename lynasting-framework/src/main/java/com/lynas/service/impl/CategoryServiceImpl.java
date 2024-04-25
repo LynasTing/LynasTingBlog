@@ -149,4 +149,24 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
       return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
     }
   }
+
+  /**
+   * 删除分类
+   */
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public R delCategory(Long id) {
+    try {
+      if (Objects.isNull(id)) {
+        throw new SystemException(AppHttpCodeEnum.ID_IS_NULL);
+      }
+      Category byId = getById(id);
+      getBaseMapper().deleteById(byId);
+      return R.okResult();
+    }catch (Exception e) {
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+    }
+    return null;
+  }
 }
