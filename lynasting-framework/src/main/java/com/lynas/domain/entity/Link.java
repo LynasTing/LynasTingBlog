@@ -30,7 +30,7 @@ public class Link implements Serializable {
     //网站地址
     private String address;
     //审核状态 (1代表未审核，2代表审核通过，3代表审核未通过)
-    private String status;
+    private Integer status;
 
     private Long createBy;
 

@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Accessors(chain = true)
 public class CategoryPageVo {
   @ExcelProperty("分类id")
   private Long id;
@@ -20,6 +17,6 @@ public class CategoryPageVo {
   @ExcelProperty("描述")
   private String description;
 
-  @ExcelProperty("状态 1:正常, 0禁用")
-  private int status;
+  @ExcelProperty("状态 1代表未审核，2代表审核通过，3代表审核未通过")
+  private Integer status;
 }

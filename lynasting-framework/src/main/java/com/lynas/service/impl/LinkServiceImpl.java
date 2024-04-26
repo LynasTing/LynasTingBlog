@@ -1,17 +1,26 @@
 package com.lynas.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.constants.SystemConst;
 import com.lynas.domain.R;
+import com.lynas.domain.dto.content.CategoryPageDto;
 import com.lynas.domain.entity.Link;
 import com.lynas.domain.vo.LinkVo;
+import com.lynas.domain.vo.PageVo;
+import com.lynas.domain.vo.content.LinkPageVo;
+import com.lynas.enums.AppHttpCodeEnum;
 import com.lynas.mapper.LinkMapper;
 import com.lynas.service.LinkService;
 import com.lynas.utils.BeanCopyUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 友链(Link)表服务实现类
@@ -30,5 +39,27 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements Li
     // 查询所有审核通过的
     List<LinkVo> linkVos = BeanCopyUtils.beanListCopy(list, LinkVo.class);
     return R.okResult(linkVos);
+  }
+
+  /**
+   * 分页查询友联
+   */
+  @Transactional(rollbackFor = Exception.class)
+  @Override
+  public R pageLink(CategoryPageDto args) {
+    try {
+      LambdaQueryWrapper<Link> wrapper = new LambdaQueryWrapper<>();
+      wrapper.select(Link::getName, Link::getStatus, Link::getAddress, Link::getId, Link::getDescription);
+      if (!Objects.isNull(args.getStatus())) {
+        wrapper.eq(Link::getStatus, args.getStatus());
+      }
+      wrapper.like(StringUtils.hasText(args.getName()), Link::getName, args.getName());
+      Page<Link> page = new Page(args.getPageNum(), args.getPageSize());
+      page(page, wrapper);
+      return R.okResult(new PageVo(BeanCopyUtils.beanListCopy(page.getRecords(), LinkPageVo.class), page.getTotal()));
+    } catch (Exception e) {
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+    }
   }
 }
