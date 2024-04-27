@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lynas.constants.SystemConst;
 import com.lynas.domain.R;
 import com.lynas.domain.dto.content.CategoryPageDto;
+import com.lynas.domain.dto.content.LinkEditDto;
 import com.lynas.domain.entity.Link;
 import com.lynas.domain.vo.LinkVo;
 import com.lynas.domain.vo.PageVo;
@@ -58,6 +59,25 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements Li
       page(page, wrapper);
       return R.okResult(new PageVo(BeanCopyUtils.beanListCopy(page.getRecords(), LinkPageVo.class), page.getTotal()));
     } catch (Exception e) {
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+    }
+  }
+
+  /**
+   * 新增友链
+   */
+  @Override
+  @Transactional(rollbackFor = RuntimeException.class)
+  public R addLink(LinkEditDto args) {
+    try {
+      if(!StringUtils.hasText(args.getName()) || !StringUtils.hasText(args.getAddress())) {
+        return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+      }
+      Link link = BeanCopyUtils.beanCopy(args, Link.class);
+      save(link);
+      return R.okResult();
+    }catch (RuntimeException e) {
       TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
       return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
     }

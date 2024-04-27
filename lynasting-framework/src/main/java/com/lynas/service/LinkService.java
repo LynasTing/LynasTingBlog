@@ -3,6 +3,7 @@ package com.lynas.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lynas.domain.R;
 import com.lynas.domain.dto.content.CategoryPageDto;
+import com.lynas.domain.dto.content.LinkEditDto;
 import com.lynas.domain.entity.Link;
 
 /**
@@ -16,4 +17,6 @@ public interface LinkService extends IService<Link> {
   R getAllLink();
 
   R pageLink(CategoryPageDto args);
+
+  R addLink(LinkEditDto args);
 }
