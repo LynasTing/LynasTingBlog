@@ -19,4 +19,6 @@ public interface LinkService extends IService<Link> {
   R pageLink(CategoryPageDto args);
 
   R addLink(LinkEditDto args);
+
+  R putLink(LinkEditDto args);
 }

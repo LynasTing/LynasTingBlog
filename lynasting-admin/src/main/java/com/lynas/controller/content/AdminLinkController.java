@@ -4,6 +4,7 @@ import com.lynas.domain.R;
 import com.lynas.domain.dto.content.CategoryPageDto;
 import com.lynas.domain.dto.content.LinkEditDto;
 import com.lynas.service.LinkService;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,20 @@ public class AdminLinkController {
   public R pageLink(@ModelAttribute CategoryPageDto args) {
     return linkService.pageLink(args);
   }
+
   /**
    * 新增友链
    */
   @PostMapping("/add")
   public R addLink(@RequestBody LinkEditDto args) {
     return linkService.addLink(args);
+  }
+
+  /**
+   * 更新友链
+   */
+  @PutMapping("/put")
+  public R putLink(@RequestBody LinkEditDto args) {
+    return linkService.putLink(args);
   }
 }
