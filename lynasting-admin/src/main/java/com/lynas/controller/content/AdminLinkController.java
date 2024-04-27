@@ -45,4 +45,12 @@ public class AdminLinkController {
   public R putLink(@RequestBody LinkEditDto args) {
     return linkService.putLink(args);
   }
+
+  /**
+   * 删除友链
+   */
+  @DeleteMapping("/del/{id}")
+  public R delLink(@PathVariable Long id) {
+    return linkService.delLink(id);
+  }
 }

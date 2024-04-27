@@ -23,4 +23,6 @@ public interface LinkService extends IService<Link> {
   R putLink(LinkEditDto args);
 
   R echoLink(Long id);
+
+  R delLink(Long id);
 }
