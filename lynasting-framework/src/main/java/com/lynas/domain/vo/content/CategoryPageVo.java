@@ -1,10 +1,7 @@
 package com.lynas.domain.vo.content;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 @Data
 public class CategoryPageVo {

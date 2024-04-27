@@ -31,6 +31,14 @@ public class AdminLinkController {
   }
 
   /**
+   * 回显友链
+   */
+  @GetMapping("/echo/{id}")
+  public R echoLink(@PathVariable Long id) {
+    return linkService.echoLink(id);
+  }
+
+  /**
    * 更新友链
    */
   @PutMapping("/put")

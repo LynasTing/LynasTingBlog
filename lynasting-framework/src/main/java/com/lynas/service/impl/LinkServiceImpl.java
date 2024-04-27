@@ -104,4 +104,22 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements Li
       return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
     }
   }
+
+  /**
+   * 回显友链
+   */
+  @Override
+  @Transactional(rollbackFor = RuntimeException.class)
+  public R echoLink(Long id) {
+    try {
+      if(Objects.isNull(id)) {
+        return R.errorResult(AppHttpCodeEnum.ID_IS_NULL);
+      }
+      LinkPageVo result = BeanCopyUtils.beanCopy(getById(id), LinkPageVo.class);
+      return R.okResult(result);
+    }catch (RuntimeException e) {
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      return R.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+    }
+  }
 }
